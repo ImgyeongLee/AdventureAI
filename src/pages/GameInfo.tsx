@@ -31,7 +31,7 @@ const GameInfo = () => {
               alt="arrow-pointing-left"
               onClick={goToPage}
             />
-            <div className="ml-[-4pt] text-6xl font-semibold italic pb-1 flex-1 text-center">Game Information</div>
+            <div className="ml-[-20pt] text-6xl font-semibold italic pb-1 flex-1 text-center">Game Information</div>
             <div className="w-auto invisible"> {/* Invisible spacer with the same width as the back button */}</div>
           </div>
           <div className="italic">
