@@ -16,6 +16,8 @@ export default {
         'hackathon-black': '#141414',
         'hackathon-yellow': '#FFDA7A',
         'hackathon-dark-gradient': '#362550',
+        'hackathon-blue': '#4700A2',
+        'hackathon-dev-card-white': '#D9D9D9'
       },
       fontFamily: {
         body: ['Roboto', 'sans-serif', ...defaultTheme.fontFamily.sans],
