@@ -30,7 +30,7 @@ const Home = () => {
                   <div className="z-10 flex flex-col items-center">
                       <button
                           onClick={handleClick}
-                          className="mt-[200px] w-[100%] min-w-[100px] py-4 px-5 bg-hackathon-pink hover:bg-blue-700 text-white font-bold rounded-lg">
+                          className="mt-[200px] w-full min-w-[100px] py-4 px-5 bg-hackathon-pink hover:bg-hackathon-dark-blue text-white font-bold rounded-lg transform hover:scale-110 transition-transform duration-150 ease-in-out active:button-press">
                           <p className="text-sm sm:text-lg md:text-xl">Get Started</p>
                       </button>
                       <p className="text-white font-light mt-4 text-sm sm:text-lg md:text-xl">Start your new adventure</p>
