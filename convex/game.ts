@@ -46,7 +46,6 @@ export const createGame = action({
         // Generate a random game id
         let id = Math.floor(Math.random() * 1000000);
 
-
         // Create a GPT prompt to generate game info
         let gameGenerationPrompt = `
             You are a text-based RPG. 
@@ -91,7 +90,7 @@ export const createGame = action({
         // Get the game info from GPT in JSON format
         const gameInfo = JSON.parse(completion.choices[0].message.content || "");
 
-        // Insert the game into the database //TODO
+        // Insert the game into the database
         await ctx.runMutation(internal.game.insertGame, {
             id,
             settingDescription: gameInfo.settingDescription,

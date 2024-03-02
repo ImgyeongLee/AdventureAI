@@ -9,13 +9,15 @@ const GameInfo = () => {
   const navigate = useNavigate();
   const goToPage = () => navigate('/host-guest');
   const [description, setDescription] = useState('');
+  const createGame = useAction(api.game.createGame);
+
 
   const handleChange = (event: { target: { value: SetStateAction<string> } }) => {
     setDescription(event.target.value);
   };
 
   const handleClick = () => {
-    const createGame = useAction(api.game.createGame);
+    createGame({ description });
   };
 
   return (
