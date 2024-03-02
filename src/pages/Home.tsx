@@ -51,7 +51,7 @@ const Home = () => {
               </div>
           </div>
           <div className={"bg-gradient-to-b from-hackathon-blue to-hackathon-gradient min-h-full w-full"} >
-              <img className="bottom-[15vh] left-1/2 transform -translate-x-1/2 relative z-[2] w-full max-h-full" src={oval_background_purple} alt="oval-background-svg" />
+              <img className="bottom-[21vh] left-1/2 transform -translate-x-1/2 relative z-[2] w-full max-h-full" src={oval_background_purple} alt="oval-background-svg" />
               <div className={"flex flex-col items-center"}>
                   <div className={"text-[5rem] font-bold text-white text-center"}>Developers</div>
                   <div className={"flex flex-row justify-between items-center px-4 w-[80%] mt-[100px]"}>
