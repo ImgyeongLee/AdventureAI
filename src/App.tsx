@@ -15,9 +15,9 @@ function App() {
         <Route path="/lobby" element={<Lobby />} />
         <Route path="/host-guest" element={<HostGuest />} />
         <Route path="/game-info" element={<GameInfo />} />
-        <Route path="/game" element={<Game />} />
+        <Route path="/game:gameId" element={<Game />} />
         <Route path="/role" element={<Role />} />
-        <Route path="/gameplay" element={<GamePlay />} />
+        <Route path="/gameplay:gameId" element={<GamePlay />} />
     </Routes>
   );
 }

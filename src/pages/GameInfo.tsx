@@ -11,13 +11,15 @@ const GameInfo = () => {
   const [description, setDescription] = useState('');
   const createGame = useAction(api.game.createGame);
 
-
   const handleChange = (event: { target: { value: SetStateAction<string> } }) => {
     setDescription(event.target.value);
   };
 
-  const handleClick = () => {
-    createGame({ description });
+  const handleClick = async () => {
+    createGame({ description }).then((id) => {
+      console.log(`Game created with id: ${id}`);
+      navigate(`/dashboard/${id}`); // TODO: Redirect to the host page for this page
+    });
   };
 
   return (
@@ -35,9 +37,9 @@ const GameInfo = () => {
             <div className="w-auto invisible"> {/* Invisible spacer with the same width as the back button */}</div>
           </div>
           <div className="italic">
-            Turn in your basic game information!
+            Provide your basic game information!
             <br />
-            The AI will automatically set your game.
+            The AI will automatically create your game.
           </div>
         </div>
         <div className="h-full w-full p-12">

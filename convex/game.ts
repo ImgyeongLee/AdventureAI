@@ -3,7 +3,8 @@ import { action, internalMutation } from './_generated/server';
 import { internal } from './_generated/api';
 import { OpenAI } from "openai";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || ""}); //TODO: Make sure api key is not an empty string!
+//const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || ""}); //TODO: Make sure api key is not an empty string!
+const openai = new OpenAI({ apiKey: "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"}); //TODO: Make sure api key is not an empty string!
 
 export const insertGame = internalMutation(async ({db},
     {
@@ -44,7 +45,9 @@ export const createGame = action({
     args: { description : v.string() },
     handler: async (ctx, args) => {
         // Generate a random game id
-        let id = Math.floor(Math.random() * 1000000);
+        let id = Math.floor(Math.random() * 1000000) + 99999;
+
+        console.log("Chose game id: " + id);
 
         // Create a GPT prompt to generate game info
         let gameGenerationPrompt = `
@@ -70,6 +73,8 @@ export const createGame = action({
         `;
         gameGenerationPrompt += args.description;
 
+        console.log("Prompt: \n" + gameGenerationPrompt)
+
         // Send the prompt to GPT
         const completion = await openai.chat.completions.create({
             messages: [
@@ -82,13 +87,15 @@ export const createGame = action({
                     content: gameGenerationPrompt,
                 },
             ],
-            model: "gpt-3.5-turbo-0125",
-            max_tokens: 1000,
+            model: "gpt-3.5-turbo",
+            max_tokens: 2000,
             response_format: { "type": "json_object" },
         });
 
         // Get the game info from GPT in JSON format
         const gameInfo = JSON.parse(completion.choices[0].message.content || "");
+
+        console.log("Game info: \n" + JSON.stringify(gameInfo, null, 2));
 
         // Insert the game into the database
         await ctx.runMutation(internal.game.insertGame, {
