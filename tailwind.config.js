@@ -22,6 +22,11 @@ export default {
       },
       gridTemplateRows: {
         'hackathon-row-2': '20% auto',
+        'hackathon-form': '1fr 3fr 0.5fr',
+        'hackathon-role-form': '1fr 3fr',
+      },
+      gridTemplateColumns: {
+        half: '1fr 1fr',
       },
     },
   },
