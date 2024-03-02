@@ -30,7 +30,7 @@ const YourMessage = ({ message }) => {
 
 export const GamePlay = ( ) => {
     const params = useParams();
-    console.log("== gameplay page received id: ", params.id)
+    console.log("== gameplay page received id: ", params.gameId); 
     const [newMessage, setNewMessage] = useState('');
 
     const handleSendMessage = (e) => {
