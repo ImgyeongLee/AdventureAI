@@ -14,7 +14,7 @@ export default defineSchema({
     skillDescription: v.optional(v.string()),
     skillAttackPoints: v.optional(v.number()),
     skillSuccessRate: v.optional(v.number()),
-  }).index('by_id', ['id']),
+  }).index('by_userId', ['id']),
   games: defineTable({
     id: v.number(),
     status: v.string(),
@@ -25,7 +25,7 @@ export default defineSchema({
     monsterSkillDescription: v.string(),
     monsterSkillAttackPoints: v.number(),
     monsterSkillSuccessRate: v.number(),
-  }).index('by_id', ['id']),
+  }).index('by_gameId', ['id']),
   messages: defineTable({
     gameId: v.number(),
     userId: v.string(),

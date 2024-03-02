@@ -1,4 +1,4 @@
-import { query, mutation } from './_generated/server';
+import { query, internalMutation } from './_generated/server';
 import { v } from 'convex/values';
 
 export const getUsers = query({
@@ -17,7 +17,7 @@ export const getUserId = query({
   },
 });
 
-export const createUser = mutation({
+export const createUser = internalMutation({
   args: { userId: v.string() },
   handler: async (ctx, args) => {
     const newUserId = await ctx.db.insert('users', {
@@ -27,7 +27,7 @@ export const createUser = mutation({
   },
 });
 
-export const updateUser = mutation({
+export const updateUser = internalMutation({
   args: {
     _id: v.id('users'),
     name: v.optional(v.string()),
