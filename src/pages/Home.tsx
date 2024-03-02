@@ -38,42 +38,42 @@ const Home = () => {
               </div>
           </div>
           <div className="bg-gradient-to-b from-hackathon-dark-blue to-hackathon-gradient min-h-screen relative z-[1] flex items-start">
-              <div className="flex flex-col items-center text-center mt-[100px] text-white">
-                  <div className="catch text-left w-[70%] max-w-[500px] mx-auto">
-                      <p className="font-bold text-[5rem] mb-[-20px]">Customize</p>
-                      <p className="font-bold text-[5rem] mb-[-20px]">Your</p>
-                      <p className="font-bold text-[5rem] mb-[-20px]">Game</p>
-                      <p className="text-white text-[1.5rem] text-left">AI will become the Game Master for your imaginative game!</p>
+              <div className="flex flex-col items-center text-center mt-[100px] md:mt-[50px] lg:mt-[100px] text-white">
+                  <div className="catch text-left w-full sm:w-[90%] md:w-[80%] lg:w-[70%] max-w-[500px] mx-auto">
+                      <p className="font-bold text-[3rem] sm:text-[4rem] md:text-[5rem] mb-[-20px]">Customize</p>
+                      <p className="font-bold text-[3rem] sm:text-[4rem] md:text-[5rem] mb-[-20px]">Your</p>
+                      <p className="font-bold text-[3rem] sm:text-[4rem] md:text-[5rem] mb-[-20px]">Game</p>
+                      <p className="mt-[40px] text-white text-[1rem] sm:text-[1.25rem] md:text-[1.5rem] text-left">AI will become the Game Master for your imaginative game!</p>
                   </div>
               </div>
-              <div className="svgDiv mx-auto mt-[100px]">
-                  <img className="w-[80%] mx-auto" src={logo} alt="some-svg" />
+              <div className="svgDiv mx-auto mt-[50px] sm:mt-[75px] md:mt-[100px]">
+                  <img className="w-[60%] sm:w-[70%] md:w-[80%] mx-auto" src={logo} alt="some-svg" />
               </div>
           </div>
-          <div className={"bg-gradient-to-b from-hackathon-blue to-hackathon-gradient min-h-full w-full"} >
-              <img className="bottom-[21vh] left-1/2 transform -translate-x-1/2 relative z-[2] w-full max-h-full" src={oval_background_purple} alt="oval-background-svg" />
-              <div className={"flex flex-col items-center"}>
-                  <div className={"text-[5rem] font-bold text-white text-center"}>Developers</div>
-                  <div className={"flex flex-row justify-between items-center px-4 w-[80%] mt-[100px]"}>
-                      <div className="flex-1">
+          <div className="bg-gradient-to-b from-hackathon-blue to-hackathon-gradient min-h-full w-full">
+              <img className="relative bottom-[21vh] left-1/2 transform -translate-x-1/2 z-[2] w-full max-h-full" src={oval_background_purple} alt="oval-background-svg" />
+              <div className="flex flex-col items-center">
+                  <div className="text-[3rem] sm:text-[4rem] md:text-[5rem] font-bold text-white text-center">Developers</div>
+                  <div className="flex flex-col sm:flex-row justify-between items-center px-4 w-[95%] sm:w-[80%] mt-[50px] sm:mt-[100px]">
+                      <div className="flex-1 mb-4 sm:mb-0">
                           <DevCard />
-                          <div className={"text-[1.5rem] text-center text-white mt-[30px]"}>Derek Williams</div>
-                          <div className={"text-[1.1rem] text-center text-white"}>Position</div>
+                          <div className="text-[1.2rem] sm:text-[1.5rem] text-center text-white mt-[30px]">Derek Williams</div>
+                          <div className="text-[1rem] sm:text-[1.1rem] text-center text-white">Position</div>
+                      </div>
+                      <div className="flex-1 mb-4 sm:mb-0">
+                          <DevCard />
+                          <div className="text-[1.2rem] sm:text-[1.5rem] text-center text-white mt-[30px]">Sayar Hla Htun</div>
+                          <div className="text-[1rem] sm:text-[1.1rem] text-center text-white">Position</div>
                       </div>
                       <div className="flex-1">
                           <DevCard />
-                          <div className={"text-[1.5rem] text-center text-white mt-[30px]"}>Hla Htun</div>
-                          <div className={"text-[1.1rem] text-center text-white"}>Position</div>
-                      </div>
-                      <div className="flex-1">
-                          <DevCard />
-                          <div className={"text-[1.5rem] text-center text-white mt-[30px]"}>Imgyeong Lee</div>
-                          <div className={"text-[1.1rem] text-center text-white"}>Position</div>
+                          <div className="text-[1.2rem] sm:text-[1.5rem] text-center text-white mt-[30px]">Imgyeong Lee</div>
+                          <div className="text-[1rem] sm:text-[1.1rem] text-center text-white">Position</div>
                       </div>
                   </div>
-                  <div className={"deco"}>
-                      <img className="relative w-[65%] top-[-40vh] left-[-40vw] z-10" src={stardust} alt="Stardust-svg" style={{marginRight: '-100%'}} />
-                      <img className="relative w-[65%] top-[-45vh] right-[-47vw] z-10" src={stardust} alt="Stardust-svg" style={{marginLeft: '-100%'}} />
+                  <div className="deco">
+                      <img className="relative w-[65%] sm:w-[65%] md:w-[65%] top-[-40vh] sm:top-[-40vh] md:top-[-40vh] left-[-40vw] sm:left-[-40vw] md:left-[-40vw] z-10" src={stardust} alt="Stardust-svg" style={{marginRight: '-100%'}} />
+                      <img className="relative w-[65%] sm:w-[65%] md:w-[65%] top-[-45vh] sm:top-[-45vh] md:top-[-45vh] right-[-47vw] sm:right-[-47vw] md:right-[-47vw] z-10" src={stardust} alt="Stardust-svg" style={{marginLeft: '-100%'}} />
                   </div>
               </div>
           </div>
