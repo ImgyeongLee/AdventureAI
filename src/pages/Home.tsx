@@ -63,13 +63,14 @@ const Home = () => {
         <div className="svgDiv mx-auto mt-[50px] sm:mt-[75px] md:mt-[100px]">
           <img className="w-[60%] sm:w-[70%] md:w-[80%] mx-auto" src={logo} alt="some-svg" />
         </div>
+        <img
+            className="absolute bottom-0 left-1/2 transform -translate-x-1/2 z-[2] w-full max-h-full"
+            src={oval_background_purple}
+            alt="oval-background-svg"
+        />
       </div>
       <div className="bg-gradient-to-b from-hackathon-blue to-hackathon-gradient min-h-full w-full">
-        <img
-          className="relative bottom-[24vh] left-1/2 transform -translate-x-1/2 z-[2] w-full max-h-full"
-          src={oval_background_purple}
-          alt="oval-background-svg"
-        />
+
         <div className="flex flex-col items-center">
           <div className="text-[3rem] sm:text-[4rem] md:text-[5rem] font-bold text-white text-center">Developers</div>
           <div className="flex flex-col sm:flex-row justify-between items-center px-4 w-[95%] sm:w-[80%] mt-[50px] sm:mt-[100px]">
@@ -80,7 +81,7 @@ const Home = () => {
             </div>
             <div className="flex-1 mb-4 sm:mb-0">
               <DevCard />
-              <div className="text-[1.2rem] sm:text-[1.5rem] text-center text-white mt-[30px]">Sayar Hla Htun</div>
+              <div className="text-[1.2rem] sm:text-[1.5rem] text-center text-white mt-[30px]">Hla Htun</div>
               <div className="text-[1rem] sm:text-[1.1rem] text-center text-white">Position</div>
             </div>
             <div className="flex-1">
