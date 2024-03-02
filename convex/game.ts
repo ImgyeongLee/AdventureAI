@@ -3,9 +3,9 @@ import { action, internalMutation } from './_generated/server';
 import { internal } from './_generated/api';
 import { OpenAI } from "openai";
 
-const openai = new OpenAI();
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || ""}); //TODO: Make sure api key is not an empty string!
 
-const insertGame = internalMutation(async ({db},
+export const insertGame = internalMutation(async ({db},
     {
         id,
         settingDescription,
@@ -40,11 +40,12 @@ const insertGame = internalMutation(async ({db},
     }
 );
 
-const createGame = action({
+export const createGame = action({
     args: { description : v.string() },
     handler: async (ctx, args) => {
         // Generate a random game id
         let id = Math.floor(Math.random() * 1000000);
+
 
         // Create a GPT prompt to generate game info
         let gameGenerationPrompt = `
@@ -91,7 +92,7 @@ const createGame = action({
         const gameInfo = JSON.parse(completion.choices[0].message.content || "");
 
         // Insert the game into the database //TODO
-        await ctx.runMutation(internal.myMutations.insertGame, {
+        await ctx.runMutation(internal.game.insertGame, {
             id,
             settingDescription: gameInfo.settingDescription,
             monsterDescription: gameInfo.monsterDescription,
