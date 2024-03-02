@@ -14,25 +14,27 @@ const Home = () => {
 
   return (
       <>
-          <div className="bg-gradient-to-b from-hackathon-purple to-hackathon-gradient min-h-full w-full">
-              <div className="absolute top-[25%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-start">
-                  <div className="flex justify-center relative">
-                      <img className="stardust-l absolute w-[20%] -left-[-90%] top-[15vh] z-10" src={stardust} alt="Stardust-svg" style={{marginLeft: '-100%'}} />
-                      <img className="logo w-[70%] h-auto z-20" src={logo} alt="Logo" />
-                      <img className="stardust-r absolute w-[25%] top-[10px] -right-[-80%] z-10" src={stardust} alt="Stardust-svg" style={{marginRight: '-100%'}} />
-                  </div>
-              </div>
-              <img className="absolute bottom-[-0.5%] left-1/2 transform -translate-x-1/2 z-[1] w-full max-h-full" src={oval_background} alt="oval-background-svg" />
-              <img className="tree absolute bottom-[-5%] left-[77%] transform -translate-x-1/2 z-[1] w-[50%] h-auto" src={tree} alt="tree-svg" />
-              <img className="tree absolute bottom-[-5%] left-[17%] transform -translate-x-1/2 z-[0] w-[40%] h-auto" src={tree} alt="tree-svg" />
+          <div className="bg-gradient-to-b from-hackathon-purple to-hackathon-gradient min-h-screen w-full overflow-hidden">
+              <div className="relative flex justify-center items-center min-h-screen">
+                  {/* Centering the stardust and logo images */}
+                  <img className="absolute top-[30%] left-[30%] w-[5%] z-10" src={stardust} alt="Stardust-svg" />
+                  <img className="absolute top-[15%] left-1/2 transform -translate-x-1/2 w-[20%] z-20" src={logo} alt="Logo" />
+                  <img className="absolute top-[10%] right-[30%] w-[7%] z-10" src={stardust} alt="Stardust-svg" />
 
-              <div className="intro-description flex flex-col justify-center items-center min-h-screen">
-                  <button
-                      onClick={handleClick}
-                      className="w-[20%] min-w-[100px] py-[25px] px-[20px] mt-[200px] bg-hackathon-pink hover:bg-blue-700 text-white font-bold rounded-[20px] z-[2]">
-                      <p className="text-sm sm:text-lg md:text-xl lg:text-[2em]">Get Started</p>
-                  </button>
-                  <p className={"text-white font-light text-sm sm:text-lg md:text-xl lg:text-[2em] relative z-[2] mt-[20px]"}>Start your new adventure</p>
+                  {/* Adjusting the position of the background oval and trees */}
+                  <img className="absolute bottom-0 left-1/2 transform -translate-x-1/2 z-0 w-full" src={oval_background} alt="oval-background-svg" />
+                  <img className="absolute bottom-[0] left-[77%] transform -translate-x-1/2 z-0 w-[40%]" src={tree} alt="tree-svg" />
+                  <img className="absolute bottom-[0] left-[20%] transform -translate-x-1/2 z-0 w-[30%]" src={tree} alt="tree-svg" />
+
+                  {/* Ensuring the button and introduction text are well-positioned and visible */}
+                  <div className="z-10 flex flex-col items-center">
+                      <button
+                          onClick={handleClick}
+                          className="mt-[200px] w-[100%] min-w-[100px] py-4 px-5 bg-hackathon-pink hover:bg-blue-700 text-white font-bold rounded-lg">
+                          <p className="text-sm sm:text-lg md:text-xl">Get Started</p>
+                      </button>
+                      <p className="text-white font-light mt-4 text-sm sm:text-lg md:text-xl">Start your new adventure</p>
+                  </div>
               </div>
           </div>
           <div className="bg-gradient-to-b from-hackathon-dark-blue to-hackathon-gradient min-h-screen relative z-[1] flex items-start">
@@ -49,7 +51,7 @@ const Home = () => {
               </div>
           </div>
           <div className={"bg-gradient-to-b from-hackathon-blue to-hackathon-gradient min-h-full w-full"} >
-              <img className="absolute bottom-[-100.5%] left-1/2 transform -translate-x-1/2 z-[1] w-full max-h-full" src={oval_background_purple} alt="oval-background-svg" />
+              <img className="bottom-[15vh] left-1/2 transform -translate-x-1/2 relative z-[2] w-full max-h-full" src={oval_background_purple} alt="oval-background-svg" />
               <div className={"flex flex-col items-center"}>
                   <div className={"text-[5rem] font-bold text-white text-center"}>Developers</div>
                   <div className={"flex flex-row justify-between items-center px-4 w-[80%] mt-[100px]"}>
@@ -75,7 +77,7 @@ const Home = () => {
                   </div>
               </div>
           </div>
-          <div className="absolute bottom-[-200%] z-[20] w-full">
+          <div className="relative bottom-[0] z-[20] w-full">
               <BlackWave />
           </div>
       </>
