@@ -66,7 +66,7 @@ const Home = () => {
       </div>
       <div className="bg-gradient-to-b from-hackathon-blue to-hackathon-gradient min-h-full w-full">
         <img
-          className="relative bottom-[21vh] left-1/2 transform -translate-x-1/2 z-[2] w-full max-h-full"
+          className="relative bottom-[24vh] left-1/2 transform -translate-x-1/2 z-[2] w-full max-h-full"
           src={oval_background_purple}
           alt="oval-background-svg"
         />
