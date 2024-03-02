@@ -8,19 +8,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        'hackathon-dark-purple': '#141434',
+        'hackathon-dark-purple': '#230C40',
         'hackathon-purple': '#3F0884',
         'hackathon-gradient': '#641f99',
         'hackathon-dark-blue': '#141434',
         'hackathon-pink': '#F838B7',
         'hackathon-black': '#141414',
         'hackathon-yellow': '#FFDA7A',
+        'hackathon-dark-gradient': '#362550',
       },
       fontFamily: {
         body: ['Roboto', 'sans-serif', ...defaultTheme.fontFamily.sans],
       },
       gridTemplateRows: {
-        'hackathon-row-2': '15% auto',
+        'hackathon-row-2': '20% auto',
       },
     },
   },
