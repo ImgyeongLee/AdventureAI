@@ -1,7 +1,23 @@
-import './App.css';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Home from './pages/Home';
+import HostGuest from './pages/HostGuest';
+import GameInfo from './pages/GameInfo';
+import Game from './pages/Game';
+import Role from './pages/Role';
+import Lobby from './pages/Lobby';
 
 function App() {
-  return <></>;
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/home" element={<Navigate to="/" />} />
+      <Route path="/lobby" element={<Lobby />} />
+      <Route path="/host-guest" element={<HostGuest />} />
+      <Route path="/game-info" element={<GameInfo />} />
+      <Route path="/game" element={<Game />} />
+      <Route path="/role" element={<Role />} />
+    </Routes>
+  );
 }
 
 export default App;
