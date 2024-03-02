@@ -1,5 +1,6 @@
 import image from "../assets/placeholder-image.png"
 import {useState} from "react";
+import { useParams } from "react-router-dom";
 
 const PlayerMessage = ({ player, message }) => {
     return (
@@ -27,7 +28,9 @@ const YourMessage = ({ message }) => {
     );
 };
 
-export const GamePlay = ({ text, messages, sendMessage }) => {
+export const GamePlay = ( ) => {
+    const params = useParams();
+    console.log("== gameplay page received id: ", params.id)
     const [newMessage, setNewMessage] = useState('');
 
     const handleSendMessage = (e) => {
@@ -39,13 +42,13 @@ export const GamePlay = ({ text, messages, sendMessage }) => {
     };
 
     // currently, hard coding messages
-    messages = [
+    const messages = [
         { sender: 'Player 1', text: 'Boi, peep that mf-ing mountain' },
         { sender: 'Player 2', text: 'Exquisite' },
         { sender: 'Player 3', text: 'Kith' },
         { sender: 'You', text: '?' },
     ];
-    text ="There is a mountain called Lorem Ipsum There is a mountain called Lorem Ipsum There is a mountain called Lorem Ipsum"
+    const text ="There is a mountain called Lorem Ipsum There is a mountain called Lorem Ipsum There is a mountain called Lorem Ipsum"
 
     return (
         <div className="bg-custom-gradient container flex min-w-full min-h-full">

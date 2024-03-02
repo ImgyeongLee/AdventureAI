@@ -17,7 +17,7 @@ function App() {
         <Route path="/game-info" element={<GameInfo />} />
         <Route path="/game:gameId" element={<Game />} />
         <Route path="/role" element={<Role />} />
-        <Route path="/gameplay:gameId" element={<GamePlay />} />
+        <Route path="/gameplay/:gameId" element={<GamePlay />} />
     </Routes>
   );
 }

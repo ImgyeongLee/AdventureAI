@@ -18,7 +18,7 @@ const GameInfo = () => {
   const handleClick = async () => {
     createGame({ description }).then((id) => {
       console.log(`Game created with id: ${id}`);
-      navigate(`/dashboard/${id}`); // TODO: Redirect to the host page for this page
+      navigate(`/gameplay/${id}`); // TODO: Redirect to the host page for this page
     });
   };
 
