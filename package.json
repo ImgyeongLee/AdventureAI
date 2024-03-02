@@ -11,10 +11,12 @@
   },
   "dependencies": {
     "@clerk/clerk-react": "^4.30.7",
+    "clsx": "^2.1.0",
     "convex": "^1.10.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.2"
+    "react-router-dom": "^6.22.2",
+    "tailwind-merge": "^2.2.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",
