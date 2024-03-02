@@ -21,3 +21,8 @@ html {
 .custom-object-position {
   object-position: 0 20%; /* Adjust as needed */
 }
+
+.hover-border-bottom:hover {
+  border-bottom: 4px solid;
+  border-radius: 5px;
+}
