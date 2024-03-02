@@ -17,3 +17,7 @@ html {
   scroll-behavior: smooth;
   overflow-x: hidden;
 }
+
+.custom-object-position {
+  object-position: 0 20%; /* Adjust as needed */
+}
