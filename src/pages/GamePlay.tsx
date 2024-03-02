@@ -34,8 +34,8 @@ export const GamePlay = ( ) => {
     const [newMessage, setNewMessage] = useState('');
 
     const handleSendMessage = (e) => {
+        e.preventDefault();
         console.log("sent")
-        // e.preventDefault();
         // if (!newMessage.trim()) return; // Ignore empty messages
         // sendMessage(newMessage);
         // setNewMessage('');
