@@ -3,8 +3,7 @@ import { action, internalMutation } from './_generated/server';
 import { internal } from './_generated/api';
 import { OpenAI } from "openai";
 
-//const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || ""}); //TODO: Make sure api key is not an empty string!
-const openai = new OpenAI({ apiKey: "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"}); //TODO: Make sure api key is not an empty string!
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || ""}); //TODO: Make sure api key is not an empty string!
 
 export const insertGame = internalMutation(async ({db},
     {
