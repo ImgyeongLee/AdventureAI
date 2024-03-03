@@ -70,18 +70,17 @@ export const generateFirstScene = action({
 
       console.log('Image URL: ' + imageUrl);
 
+      // OLD CODE: Downloading the image to Convex storage
       // Download the image
-      const imageResponse = await fetch(imageUrl);
-      const imageBlob = await imageResponse.blob();
-
+      //const imageResponse = await fetch(imageUrl);
+      //const imageBlob = await imageResponse.blob();
       // Save the image to convex storage
-      const imgId = await ctx.storage.store(imageBlob);
-
-      console.log('Image ID: ' + imgId);
+      //const imgId = await ctx.storage.store(imageBlob);
+      //console.log('Image ID: ' + imgId);
 
       await ctx.runMutation(internal.game.updateGameScene, {
         _id: currentGame._id,
-        imageId: imgId,
+        imageUrl: imageUrl,
         currentDescription: gameInfo.currentDescription,
       });
     }
@@ -152,18 +151,17 @@ export const generateFinalScene = internalAction({
 
       console.log('Image URL: ' + imageUrl);
 
+      // OLD CODE: Downloading the image to Convex storage
       // Download the image
-      const imageResponse = await fetch(imageUrl);
-      const imageBlob = await imageResponse.blob();
-
+      //const imageResponse = await fetch(imageUrl);
+      //const imageBlob = await imageResponse.blob();
       // Save the image to convex storage
-      const imgId = await ctx.storage.store(imageBlob);
-
-      console.log('Image ID: ' + imgId);
+      //const imgId = await ctx.storage.store(imageBlob);
+      //console.log('Image ID: ' + imgId);
 
       await ctx.runMutation(internal.game.updateGameScene, {
         _id: currentGame._id,
-        imageId: imgId,
+        imageUrl: imageUrl,
         currentDescription: gameInfo.currentDescription,
       });
     }

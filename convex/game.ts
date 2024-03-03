@@ -36,7 +36,7 @@ export const insertGame = internalMutation(
     { db },
     {
       id,
-      imageId,
+      imageUrl,
       currentDescription,
       settingDescription,
       monsterDescription,
@@ -47,7 +47,7 @@ export const insertGame = internalMutation(
       monsterSkillSuccessRate,
     }: {
       id: number;
-      imageId: any;
+      imageUrl: string;
       currentDescription: string;
       settingDescription: string;
       monsterDescription: string;
@@ -62,7 +62,7 @@ export const insertGame = internalMutation(
     await db.insert('games', {
       id, //TODO: Make sure id is unique
       status: 'lobby', // Set the initial status to lobby
-      imageId: imageId,
+      imageUrl : imageUrl,
       currentDescription,
       settingDescription,
       monsterDescription,
@@ -78,12 +78,12 @@ export const insertGame = internalMutation(
 export const updateGameScene = internalMutation({
   args: {
     _id: v.id('games'),
-    imageId: v.id('_storage'),
+    imageUrl: v.string(),
     currentDescription: v.string(),
   },
   handler: async (ctx, args) => {
     await ctx.db.patch(args._id, {
-      imageId: args.imageId,
+      imageUrl: args.imageUrl,
       currentDescription: args.currentDescription,
     });
   },
@@ -196,19 +196,10 @@ export const createGame = action({
 
     console.log('Image URL: ' + imageUrl);
 
-    // Download the image
-    const imageResponse = await fetch(imageUrl);
-    const imageBlob = await imageResponse.blob();
-
-    // Save the image to convex storage
-    const imgId = await ctx.storage.store(imageBlob);
-
-    console.log('Image ID: ' + imgId);
-
     // Insert the game into the database
     await ctx.runMutation(internal.game.insertGame, {
       id,
-      imageId: imgId,
+      imageUrl: imageUrl,
       currentDescription: gameInfo.currentDescription,
       settingDescription: gameInfo.settingDescription,
       monsterDescription: gameInfo.monsterDescription,
