@@ -1,7 +1,7 @@
 import image from '../assets/placeholder-image.png';
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation, useQuery } from 'convex/react';
+import { useAction, useMutation, useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { useAuth } from '@clerk/clerk-react';
 
@@ -25,7 +25,7 @@ export const GamePlay = () => {
   console.log('== gameplay page received id: ', gameId);
   const [newMessage, setNewMessage] = useState('');
   const messages = useQuery(api.message.getMessages, { gameId: Number(gameId) });
-  const createMessage = useMutation(api.message.createMessage);
+  const createMessage = useAction(api.action.sentMessage);
   const messagesEndRef = useRef(null); // Reference to the end of the messages
 
   const handleSendMessage = (e: Event) => {
@@ -33,7 +33,7 @@ export const GamePlay = () => {
     if (!newMessage.trim()) return; // Ignore empty messages
 
     if (gameId && user.userId) {
-      createMessage({ gameId: Number(gameId), sender: user.userId, body: newMessage });
+      createMessage({ gameId: Number(gameId), body: newMessage, userId: user.userId });
       setNewMessage('');
     }
   };
