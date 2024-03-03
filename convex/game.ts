@@ -62,7 +62,7 @@ export const insertGame = internalMutation(
     await db.insert('games', {
       id, //TODO: Make sure id is unique
       status: 'lobby', // Set the initial status to lobby
-      imageUrl : imageUrl,
+      imageUrl: imageUrl,
       currentDescription,
       settingDescription,
       monsterDescription,
@@ -177,8 +177,8 @@ export const createGame = action({
 
     const imgPrompt = `
             Setting: ${gameInfo.settingDescription}
-
             Monster: ${gameInfo.monsterDescription}
+            Style: Realistic, Detailed
         `;
 
     console.log('Image Generation Prompt: \n' + imgPrompt);
