@@ -1,4 +1,3 @@
-import PinkBox from '../components/PinkBox';
 import BlueWave from '../components/Wave/BlueWave';
 import RoleCard from '../components/RoleCard';
 import { useState, useEffect, SetStateAction } from 'react';
