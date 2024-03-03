@@ -29,10 +29,13 @@ export const getImageURL = query({
             .query("games")
             .filter((q) => q.eq(q.field("id"), args.gameId))
             .first();
-        
-        let imageStorageId = game?.imageId;
 
-        return await ctx.storage.getUrl(imageStorageId);
+        let imageStorageId = game?.imageId;
+        let imageUrl = imageStorageId ? await ctx.storage.getUrl(imageStorageId) : "default";
+
+        // TODO: use and actual default image url
+        
+        return imageUrl;
     }
 });
 
