@@ -1,3 +1,5 @@
+//"use node";
+
 import { v } from "convex/values";
 import { action, internalMutation } from './_generated/server';
 import { internal } from './_generated/api';
@@ -8,6 +10,7 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || ""}); //TODO: 
 export const insertGame = internalMutation(async ({db},
     {
         id,
+        imageId,
         settingDescription,
         monsterDescription,
         monsterHealthPoints,
@@ -17,6 +20,7 @@ export const insertGame = internalMutation(async ({db},
         monsterSkillSuccessRate
     } : {
         id: number,
+        imageId : string,
         settingDescription: string,
         monsterDescription: string,
         monsterHealthPoints: number,
@@ -29,6 +33,7 @@ export const insertGame = internalMutation(async ({db},
         await db.insert("games", {
             id, //TODO: Make sure id is unique
             status : "lobby", // Set the initial status to lobby
+            imageId: imageId,
             settingDescription,
             monsterDescription,
             monsterHealthPoints,
@@ -46,7 +51,7 @@ export const createGame = action({
         // Generate a random game id
         let id = Math.floor(Math.random() * 1000000) + 99999;
 
-        console.log("Chose game id: " + id);
+        console.log("Creating game with id: " + id);
 
         // Create a GPT prompt to generate game info
         let gameGenerationPrompt = `
@@ -58,21 +63,22 @@ export const createGame = action({
             The monster has a skill. 
             The monster's skill has attack points. 
             The monster's skill has a success rate between 0 and 1. 
-            \n
-            In JSON format, provide the following information about the game:
-            settingDescription, 
-            monsterDescription, 
-            monsterHealthPoints, 
-            monsterAttackPoints, 
-            monsterSkillDescription, 
-            monsterSkillAttackPoints, 
-            monsterSkillSuccessRate.
-            \n\n
-            Here is a description of the game:\n
+
+            In JSON format, fill in the following information about the game:
+            string settingDescription (this should be a short phrase), 
+            string monsterDescription (this should be a short phrase), 
+            integer monsterHealthPoints, 
+            integer monsterAttackPoints, 
+            string monsterSkillDescription (this should be a short phrase), 
+            integer monsterSkillAttackPoints, 
+            float monsterSkillSuccessRate.
+
+            Here is a description of the game: 
+
         `;
         gameGenerationPrompt += args.description;
 
-        console.log("Prompt: \n" + gameGenerationPrompt)
+        console.log("Game Generation Prompt: \n" + gameGenerationPrompt)
 
         // Send the prompt to GPT
         const completion = await openai.chat.completions.create({
@@ -96,9 +102,40 @@ export const createGame = action({
 
         console.log("Game info: \n" + JSON.stringify(gameInfo, null, 2));
 
+        let imgPrompt = `
+            Setting: ${gameInfo.settingDescription}
+
+            Monster: ${gameInfo.monsterDescription}
+        `;
+
+        console.log("Image Generation Prompt: \n" + imgPrompt);
+
+        // Generate an image using OpenAI's DALL-E model
+        const imgCompletion = await openai.images.generate({
+            //model: "dall-e-3",
+            prompt: imgPrompt,
+            n : 1,
+            //size: "256x256",
+        });
+
+        // Get the image url from the completion
+        const imageUrl = imgCompletion.data[0].url || "";
+
+        console.log("Image URL: " + imageUrl);
+
+        // Download the image
+        const imageResponse = await fetch(imageUrl);
+        const imageBlob = await imageResponse.blob();
+
+        // Save the image to convex storage
+        const imgId = await ctx.storage.store(imageBlob);
+
+        console.log("Image ID: " + imgId);
+
         // Insert the game into the database
         await ctx.runMutation(internal.game.insertGame, {
             id,
+            imageId: imgId,
             settingDescription: gameInfo.settingDescription,
             monsterDescription: gameInfo.monsterDescription,
             monsterHealthPoints: gameInfo.monsterHealthPoints,
