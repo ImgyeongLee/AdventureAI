@@ -220,16 +220,16 @@ export const monsterResponse = action({
               monsterDeathDesc += `(${currentUser.skillName}: ${currentUser.skillDescription})`;
             }
 
-            // Final scene generation
-            await ctx.runMutation(internal.game.generateFinalScene, {
-              gameId: args.gameId,
-              monsterDeathDescription: monsterDeathDesc,
-            });
-
             // Change the game status done
             await ctx.runMutation(internal.game.updateGameStatus, {
               _id: currentMonster._id,
               status: 'win',
+            });
+
+            // Final scene generation
+            await ctx.runAction(internal.gameflow.generateFinalScene, {
+              gameId: args.gameId,
+              monsterDeathDescription: monsterDeathDesc,
             });
 
             return;
@@ -277,16 +277,16 @@ export const monsterResponse = action({
             monsterDeathDesc += `(${currentUser.skillName}: ${currentUser.skillDescription})`;
           }
 
-          // Final scene generation
-          await ctx.runMutation(internal.game.generateFinalScene, {
-            gameId: args.gameId,
-            monsterDeathDescription: monsterDeathDesc,
-          });
-
           // Change the game status done
           await ctx.runMutation(internal.game.updateGameStatus, {
             _id: currentMonster._id,
             status: 'win',
+          });
+
+          // Final scene generation
+          await ctx.runAction(internal.gameflow.generateFinalScene, {
+            gameId: args.gameId,
+            monsterDeathDescription: monsterDeathDesc,
           });
 
           return;
