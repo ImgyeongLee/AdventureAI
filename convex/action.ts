@@ -155,3 +155,16 @@ export const setHost = action({
     }
   },
 });
+
+export const getUserInfo = action({
+  args: { userId: v.string() },
+  handler: async (ctx, args) => {
+    const currentUser = await ctx.runQuery(internal.user.getUser, {
+      userId: args.userId,
+    });
+
+    if (currentUser) {
+      return currentUser;
+    }
+  },
+});

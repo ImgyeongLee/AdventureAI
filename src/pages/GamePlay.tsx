@@ -40,10 +40,12 @@ const textVariants = {
 export const GamePlay = () => {
   const { gameId } = useParams();
   const user = useAuth();
-  console.log('== gameplay page received id: ', gameId);
+  const [isStart, setIsStart] = useState<boolean>(false);
+  const [isHost, setIsHost] = useState<boolean>(false);
   const [newMessage, setNewMessage] = useState('');
   const messages = useQuery(api.message.getMessages, { gameId: Number(gameId) });
   const gameInfo = useQuery(api.game.getGameInfo, { gameId: Number(gameId) });
+  const userInfo = useAction(api.action.getUserInfo);
   const createMessage = useAction(api.action.sentMessage);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -58,6 +60,27 @@ export const GamePlay = () => {
       return <YourMessage key={index} message={body} />;
     } else {
       return <PlayerMessage key={index} player={sender} message={body} />;
+    }
+  };
+
+  const checkHost = () => {
+    if (user && user.userId) {
+      userInfo({ userId: user.userId }).then((currentUser) => {
+        if (currentUser.isHost) {
+          setIsHost(true);
+        }
+      });
+    }
+  };
+
+  const handleClick = (e: Event) => {
+    e.preventDefault();
+    setIsStart(!isStart);
+
+    if (!isStart) {
+      createMessage({ gameId: Number(gameId), body: 'The game is started!', userId: 'System' });
+    } else {
+      createMessage({ gameId: Number(gameId), body: 'The game ended.', userId: 'System' });
     }
   };
 
@@ -77,6 +100,7 @@ export const GamePlay = () => {
     } else {
       setIsLoading(false);
     }
+    checkHost();
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
@@ -165,6 +189,15 @@ export const GamePlay = () => {
 
         <div className="send-messages mt-4">
           <form className="flex gap-2" onSubmit={handleSendMessage}>
+            {isHost && (
+              <motion.button
+                onClick={handleClick}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-[10px] border-0 rounded-[10px] bg-hackathon-purple">
+                {isStart ? 'End Game' : 'Start Game'}
+              </motion.button>
+            )}
             <input
               type="text"
               className="flex-1 p-2 rounded-md text-black"
