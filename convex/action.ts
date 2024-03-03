@@ -14,6 +14,19 @@ export const create = action({
   },
 });
 
+export const getGameId = action({
+  args: { userId: v.string() },
+  handler: async (ctx, args) => {
+    const currentUser = await ctx.runQuery(internal.user.getUser, {
+      userId: args.userId,
+    });
+
+    if (currentUser) {
+      return currentUser.gameId;
+    }
+  },
+});
+
 export const setUserGameId = action({
   args: { userId: v.string(), gameId: v.number() },
   handler: async (ctx, args) => {
@@ -40,13 +53,14 @@ export const setGuest = action({
     if (currentUser) {
       let guestGenerationPrompt = `
             In JSON format, fill in the following information about the game:
+
             string role (this should be a short phrase), 
-            integer attackpoints  (this should be 10 ~ 50), 
+            integer attackPoints (this should be 10 ~ 50), 
             string skillName, 
             string skillDescription, 
             string monsterSkillDescription (this should be a short phrase), 
             integer skillAttackPoints, 
-            float skillSuccessRate.
+            integer skillSuccessRate.
 
             Here is a description of the game: 
 
@@ -72,7 +86,7 @@ export const setGuest = action({
 
       const guestInfo = JSON.parse(completion.choices[0].message.content || '');
 
-      const updatedUser = await ctx.runMutation(internal.user.setUserGuest, {
+      await ctx.runMutation(internal.user.setUserGuest, {
         _id: currentUser._id,
         isHost: false,
         name: args.name,
@@ -84,8 +98,6 @@ export const setGuest = action({
         skillAttackPoints: guestInfo.skillAttackPoints,
         skillSuccessRate: guestInfo.skillSuccessRate,
       });
-
-      return updatedUser;
     }
   },
 });
