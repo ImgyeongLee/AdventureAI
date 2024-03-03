@@ -28,11 +28,9 @@ const Home = () => {
         <button
           onClick={handleClick}
           className="mt-[200px] w-full min-w-[100px] py-4 px-5 bg-hackathon-pink hover:bg-hackathon-dark-blue text-white font-bold rounded-lg transform hover:scale-110 transition-transform duration-150 ease-in-out active:button-press">
-          <motion.p
-              className="text-sm sm:text-lg md:text-xl"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-          >Get Started</motion.p>
+          <motion.p className="text-sm sm:text-lg md:text-xl" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            Get Started
+          </motion.p>
         </button>
       );
     } else {
@@ -48,7 +46,7 @@ const Home = () => {
     }
   };
 
-  const text = "Start your new adventure!"
+  const text = 'Start your new adventure!';
 
   const stardustVariantL = {
     hidden: { scale: 0, opacity: 0, rotate: 0 },
@@ -56,8 +54,8 @@ const Home = () => {
       scale: [1, 1.3, 1],
       opacity: [0, 1, 0.5, 1],
       rotate: [0, 10, -10, 0],
-      transition: { duration: 1.5, ease: "easeInOut" }
-    }
+      transition: { duration: 1.5, ease: 'easeInOut' },
+    },
   };
 
   const stardustVariantR = {
@@ -66,8 +64,8 @@ const Home = () => {
       scale: [1, 1.7, 1],
       opacity: [0, 1, 0.7, 1],
       rotate: [0, 20, -20, 0],
-      transition: { duration: 2, ease: "easeInOut" }
-    }
+      transition: { duration: 2, ease: 'easeInOut' },
+    },
   };
 
   const profileVariants = {
@@ -77,10 +75,10 @@ const Home = () => {
     visible: {
       opacity: 1,
       transition: {
-        duration: 1
-      }
-    }
-  }
+        duration: 1,
+      },
+    },
+  };
 
   const calculateDelay = (index) => 1.3 + index * 0.05;
 
@@ -128,7 +126,8 @@ const Home = () => {
 
           <div className="z-10 flex flex-col items-center">
             {buttonController()}
-            <div className={'mt-[20px] text-white font-bold text-[1rem] sm:text-[1rem] md:text-[1.5rem] cursor-default'}>
+            <div
+              className={'mt-[20px] text-white font-bold text-[1rem] sm:text-[1rem] md:text-[1.5rem] cursor-default'}>
               {text.split('').map((letter, index) => (
                 <motion.span
                   key={index}
@@ -181,76 +180,88 @@ const Home = () => {
           <div className="text-[3rem] sm:text-[4rem] md:text-[5rem] font-bold text-white text-center">Developers</div>
           <div className="flex flex-col sm:flex-row justify-between items-center px-4 w-[95%] sm:w-[80%] mt-[50px] sm:mt-[100px]">
             <div className="flex-1 mb-4 sm:mb-0">
-              <DevCard imageLink={"https://avatars.githubusercontent.com/u/16065188?v=4"}/>
+              <DevCard imageLink={'https://avatars.githubusercontent.com/u/16065188?v=4'} />
               <motion.div
                 className="text-[1.2rem] sm:text-[1.5rem] text-center text-white mt-[30px]"
                 variants={profileVariants}
-                initial={"hidden"}
-                whileInView={"visible"}
+                initial={'hidden'}
+                whileInView={'visible'}
                 whileHover={{
                   scale: 1.2,
-                  transition: { duration: 0.2 },
-                  color: "#000000",
-                  transitionEnd: { duration: 0.5, ease: "easeInOut" }
+                  transition: {
+                    duration: 0.2,
+                    end: { duration: 0.5, ease: 'easeInOut' },
+                  },
+                  color: '#000000',
                 }}
                 whileTap={{
                   scale: 0.9,
                   transition: {
                     duration: 0.2,
-                    bounce: 0.5
-                  }
-                }}
-              >
-                <a href={"https://github.com/derek-williams00"}>Derek Williams</a></motion.div>
-              <div className="text-[1rem] sm:text-[1.2rem] text-center text-white mt-[10px]">{"< "}Back End{" >"}</div>
+                    bounce: 0.5,
+                  },
+                }}>
+                <a href={'https://github.com/derek-williams00'}>Derek Williams</a>
+              </motion.div>
+              <div className="text-[1rem] sm:text-[1.2rem] text-center text-white mt-[10px]">
+                {'< '}Back End{' >'}
+              </div>
             </div>
             <div className="flex-1 mb-4 sm:mb-0">
-              <DevCard imageLink={"https://avatars.githubusercontent.com/u/72935373?v=4"}/>
+              <DevCard imageLink={'https://avatars.githubusercontent.com/u/72935373?v=4'} />
               <motion.div
-                  className="text-[1.2rem] sm:text-[1.5rem] text-center text-white mt-[30px]"
-                  variants={profileVariants}
-                  initial={"hidden"}
-                  whileInView={"visible"}
-                  whileHover={{
-                    scale: 1.2,
-                    transition: { duration: 0.2 },
-                    color: "#000000",
-                    transitionEnd: { duration: 0.5, ease: "easeInOut" }
-                  }}
-                  whileTap={{
-                    scale: 0.9,
-                    transition: {
-                      duration: 0.2,
-                      bounce: 0.5
-                    }
-                  }}
-              >
-                <a href={"https://github.com/HlaKarki"}>Hla Htun</a></motion.div>
-              <div className="text-[1rem] sm:text-[1.2rem] text-center text-white mt-[10px]">{"< "}Front End{" >"}</div>
+                className="text-[1.2rem] sm:text-[1.5rem] text-center text-white mt-[30px]"
+                variants={profileVariants}
+                initial={'hidden'}
+                whileInView={'visible'}
+                whileHover={{
+                  scale: 1.2,
+                  transition: {
+                    duration: 0.2,
+                    end: { duration: 0.5, ease: 'easeInOut' },
+                  },
+                  color: '#000000',
+                }}
+                whileTap={{
+                  scale: 0.9,
+                  transition: {
+                    duration: 0.2,
+                    bounce: 0.5,
+                  },
+                }}>
+                <a href={'https://github.com/HlaKarki'}>Hla Htun</a>
+              </motion.div>
+              <div className="text-[1rem] sm:text-[1.2rem] text-center text-white mt-[10px]">
+                {'< '}Front End{' >'}
+              </div>
             </div>
             <div className="flex-1">
-              <DevCard imageLink={"https://avatars.githubusercontent.com/u/81654344?v=4"}/>
+              <DevCard imageLink={'https://avatars.githubusercontent.com/u/81654344?v=4'} />
               <motion.div
-                  className="text-[1.2rem] sm:text-[1.5rem] text-center text-white mt-[30px]"
-                  variants={profileVariants}
-                  initial={"hidden"}
-                  whileInView={"visible"}
-                  whileHover={{
-                    scale: 1.2,
-                    transition: { duration: 0.2 },
-                    color: "#000000",
-                    transitionEnd: { duration: 0.5, ease: "easeInOut" }
-                  }}
-                  whileTap={{
-                    scale: 0.9,
-                    transition: {
-                      duration: 0.2,
-                      bounce: 0.5
-                    }
-                  }}
-              >
-                <a href={"https://github.com/ImgyeongLee"}>Imgyeong Lee</a></motion.div>
-              <div className="text-[1rem] sm:text-[1.2rem] text-center text-white mt-[10px]">{"< "}Front End + Back End{" >"}</div>
+                className="text-[1.2rem] sm:text-[1.5rem] text-center text-white mt-[30px]"
+                variants={profileVariants}
+                initial={'hidden'}
+                whileInView={'visible'}
+                whileHover={{
+                  scale: 1.2,
+                  transition: {
+                    duration: 0.2,
+                    end: { duration: 0.5, ease: 'easeInOut' },
+                  },
+                  color: '#000000',
+                }}
+                whileTap={{
+                  scale: 0.9,
+                  transition: {
+                    duration: 0.2,
+                    bounce: 0.5,
+                  },
+                }}>
+                <a href={'https://github.com/ImgyeongLee'}>Imgyeong Lee</a>
+              </motion.div>
+              <div className="text-[1rem] sm:text-[1.2rem] text-center text-white mt-[10px]">
+                {'< '}Front End + Back End{' >'}
+              </div>
             </div>
           </div>
           <div className="deco">
@@ -266,10 +277,10 @@ const Home = () => {
                 rotate: 360,
                 transition: {
                   duration: 1,
-                  ease: "linear",
+                  ease: 'linear',
                   repeat: Infinity,
-                  repeatType: "loop"
-                }
+                  repeatType: 'loop',
+                },
               }}
             />
             <motion.img
@@ -284,10 +295,10 @@ const Home = () => {
                 rotate: -360,
                 transition: {
                   duration: 1,
-                  ease: "linear",
+                  ease: 'linear',
                   repeat: Infinity,
-                  repeatType: "loop"
-                }
+                  repeatType: 'loop',
+                },
               }}
             />
           </div>
