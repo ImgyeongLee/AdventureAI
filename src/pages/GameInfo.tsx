@@ -19,6 +19,8 @@ const GameInfo = () => {
   };
 
   const handleClick = async () => {
+    if (description.length == 0) return;
+
     setLoad(true);
     createGame({ description }).then((id) => {
       setLoad(false);

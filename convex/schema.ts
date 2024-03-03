@@ -18,7 +18,7 @@ export default defineSchema({
   games: defineTable({
     id: v.number(),
     status: v.string(),
-    imageId: v.optional(v.id("_storage")),
+    imageId: v.optional(v.id('_storage')),
     settingDescription: v.string(),
     monsterDescription: v.string(),
     monsterHealthPoints: v.number(),
@@ -29,6 +29,7 @@ export default defineSchema({
   }).index('by_gameId', ['id']),
   messages: defineTable({
     gameId: v.number(),
+    userId: v.string(),
     sender: v.optional(v.string()),
     body: v.string(),
   }),

@@ -112,12 +112,14 @@ export const sentMessage = action({
     if (currentUser) {
       if (currentUser.name) {
         await ctx.runMutation(internal.message.createMessage, {
+          userId: args.userId,
           gameId: args.gameId,
           sender: currentUser.name,
           body: args.body,
         });
       } else {
         await ctx.runMutation(internal.message.createMessage, {
+          userId: args.userId,
           gameId: args.gameId,
           sender: args.userId,
           body: args.body,

@@ -66,9 +66,10 @@ export const GamePlay = () => {
       </div>
       <div className="chatbox p-[50px] bg-hackathon-chatbox-background flex flex-col flex-1 text-white max-h-[100vh]">
         <div className="messages overflow-auto flex-grow">
+          <div className="text-center pb-8">Your game invitation code is: {gameId}</div>
           {!isLoading &&
             messages?.map((msg, index) =>
-              msg.sender === user.userId ? (
+              msg.userId === user.userId ? (
                 <YourMessage key={index} message={msg.body} />
               ) : (
                 <PlayerMessage key={index} player={msg.sender} message={msg.body} />
