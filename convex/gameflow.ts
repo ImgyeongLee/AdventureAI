@@ -20,8 +20,8 @@ export const generateFirstScene = action({
       There is a monster.
       In JSON format, generate text about a cool starting battle scene (maximum is 500 characters):
       
-      string currentDescription
-      string monsterDescription
+      { string currentDescription
+      string monsterDescription }
 
       Here is a description of the setting: 
       `;
@@ -455,7 +455,7 @@ export const monsterResponse = action({
               });
 
               await ctx
-                .runAction(internal.gameflow.generateFinalScene, {
+                .runAction(internal.gameflow.generateDeadScene, {
                   gameId: args.gameId,
                 })
                 .then(async () => {

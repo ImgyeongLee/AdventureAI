@@ -8,6 +8,7 @@ import { PuffLoader } from 'react-spinners';
 import placeholderImage from '../assets/placeholder-image.png';
 import React from 'react';
 import { EndGame } from '../components/EndGame';
+import { ButtonInfo } from '../components/ButtonInfo';
 
 const PlayerMessage = ({ player, message }) => (
   <div className="flex flex-col items-start justify-start mb-7">
@@ -48,6 +49,7 @@ export const GamePlay = () => {
   const [isToggle, setIsToggle] = useState<boolean>(false);
   const [isEnd, setIsEnd] = useState<boolean>(false);
   const [newMessage, setNewMessage] = useState('');
+  const [skillInfo, setSkillInfo] = useState<string>('');
   const messages = useQuery(api.message.getMessages, { gameId: Number(gameId) });
   const gameInfo = useQuery(api.game.getGameInfo, { gameId: Number(gameId) });
   const userInfo = useAction(api.action.getUserInfo);
@@ -69,6 +71,20 @@ export const GamePlay = () => {
     } else {
       return <PlayerMessage key={index} player={sender} message={body} />;
     }
+  };
+
+  const renderButtonInfo = () => {
+    if (user && user.userId) {
+      userInfo({ userId: user.userId }).then((currentUser) => {
+        if (currentUser) {
+          let text = '';
+          text += currentUser.skillName + ` ${currentUser.skillSuccessRate} %\n`;
+          text += currentUser.skillDescription;
+          setSkillInfo(text);
+        }
+      });
+    }
+    return <ButtonInfo text={skillInfo}></ButtonInfo>;
   };
 
   const renderPlayerButtons = () => {
@@ -93,6 +109,7 @@ export const GamePlay = () => {
               style={{ maxWidth: '150px' }} // Set a max width for smaller buttons
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onHoverStart={renderButtonInfo}
               onClick={handleSkill}
               disabled={isDead}>
               Ultimate
