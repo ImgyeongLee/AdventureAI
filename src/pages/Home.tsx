@@ -6,9 +6,12 @@ import oval_background_purple from '../assets/ovalbackground-purple.svg';
 import BlackWave from '../components/Wave/BlackWave';
 import { DevCard } from '../components/DevCards/DevCard';
 import { SignInButton, useAuth } from '@clerk/clerk-react';
+import { motion } from 'framer-motion';
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
+
+
 
 const Home = () => {
   const navigate = useNavigate();
@@ -37,16 +40,48 @@ const Home = () => {
     }
   };
 
+  const text = "Start your new adventure!"
+
+  const stardustVariantL = {
+    hidden: { scale: 0, opacity: 0, rotate: 0 },
+    visible: {
+      scale: [1, 1.3, 1],
+      opacity: [0, 1, 0.5, 1],
+      rotate: [0, 10, -10, 0],
+      transition: { duration: 1.5, ease: "easeInOut" }
+    }
+  };
+
+  const stardustVariantR = {
+    hidden: { scale: 0, opacity: 0, rotate: 0 },
+    visible: {
+      scale: [1, 1.7, 1],
+      opacity: [0, 1, 0.7, 1],
+      rotate: [0, 20, -20, 0],
+      transition: { duration: 2, ease: "easeInOut" }
+    }
+  };
+
+  const calculateDelay = (index) => 1.3 + index * 0.05; // Starts after 2 seconds, then each letter appears 0.05s after the previous one
+
   return (
     <>
       <div className="bg-gradient-to-b from-hackathon-purple to-hackathon-gradient min-h-screen w-full overflow-hidden">
         <div className="relative flex justify-center items-center min-h-screen">
-          {/* Centering the stardust and logo images */}
-          <img className="absolute top-[30%] left-[30%] w-[5%] z-10" src={stardust} alt="Stardust-svg" />
-          <img className="absolute top-[15%] left-1/2 transform -translate-x-1/2 w-[20%] z-20" src={logo} alt="Logo" />
-          <img className="absolute top-[10%] right-[30%] w-[7%] z-10" src={stardust} alt="Stardust-svg" />
+          <motion.img
+              className="absolute top-[30%] left-[30%] w-[5%] z-10" src={stardust} alt="Stardust-svg"
+              variants={stardustVariantL}
+              initial="hidden"
+              whileInView={"visible"}
+          />
+          <img className="absolute top-[15%] left-1/2 transform -translate-x-1/2 w-[20%] z-20" src={logo} alt={"logo"}/>
+          <motion.img
+              className="absolute top-[10%] right-[30%] w-[7%] z-10" src={stardust} alt="Stardust-svg"
+              variants={stardustVariantR}
+              initial="hidden"
+              whileInView={"visible"}
+          />
 
-          {/* Adjusting the position of the background oval and trees */}
           <img
             className="absolute bottom-0 left-1/2 transform -translate-x-1/2 z-0 w-full"
             src={oval_background}
@@ -63,10 +98,29 @@ const Home = () => {
             alt="tree-svg"
           />
 
-          {/* Ensuring the button and introduction text are well-positioned and visible */}
           <div className="z-10 flex flex-col items-center">
             {buttonController()}
-            <p className="text-white font-light mt-4 text-sm sm:text-lg md:text-xl">Start your new adventure</p>
+            <div className={"mt-[20px] text-white font-bold text-[1rem] sm:text-[1rem] md:text-[1.5rem]"}>
+              {text.split("").map((letter, index) => (
+                  <motion.span
+                      key={index}
+                      initial={{
+                        opacity: 0,
+                        y: -20
+                      }}
+                      animate={{
+                        y: 0,
+                        opacity: 1,
+                        transition: {
+                          delay: calculateDelay(index),
+                          duration: 0.1,
+                        }
+                      }}
+                  >
+                    {letter}
+                  </motion.span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -82,7 +136,7 @@ const Home = () => {
           </div>
         </div>
         <div className="svgDiv mx-auto mt-[50px] sm:mt-[75px] md:mt-[100px]">
-          <img className="w-[60%] sm:w-[70%] md:w-[80%] mx-auto" src={logo} alt="some-svg" />
+          <img className="w-[60%] sm:w-[70%] md:w-[80%] mx-auto" src={logo} alt={"logo"}/>
         </div>
         <img
           className="absolute bottom-0 left-1/2 transform -translate-x-1/2 z-[2] w-full max-h-full"
@@ -111,17 +165,23 @@ const Home = () => {
             </div>
           </div>
           <div className="deco">
-            <img
+            <motion.img
               className="relative w-[65%] sm:w-[65%] md:w-[65%] top-[-40vh] sm:top-[-40vh] md:top-[-40vh] left-[-40vw] sm:left-[-40vw] md:left-[-40vw] z-10"
               src={stardust}
               alt="Stardust-svg"
               style={{ marginRight: '-100%' }}
+              variants={stardustVariantL}
+              initial="hidden"
+              whileInView={"visible"}
             />
-            <img
+            <motion.img
               className="relative w-[65%] sm:w-[65%] md:w-[65%] top-[-45vh] sm:top-[-45vh] md:top-[-45vh] right-[-47vw] sm:right-[-47vw] md:right-[-47vw] z-10"
               src={stardust}
               alt="Stardust-svg"
               style={{ marginLeft: '-100%' }}
+              variants={stardustVariantL}
+              initial="hidden"
+              whileInView={"visible"}
             />
           </div>
         </div>
