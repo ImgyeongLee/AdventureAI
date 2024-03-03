@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import {motion, MotionStyle} from "framer-motion";
 
 const draw = {
     hidden: { pathLength: 0, opacity: 0 },
@@ -25,7 +25,7 @@ export default function AnimatedPath() {
         yellow: "#ffdd00"
     }
 
-    const svgStyle = {
+    const svgStyle: MotionStyle = {
         strokeWidth: "10px",
         strokeLinecap: "round",
         fill: "transparent"
