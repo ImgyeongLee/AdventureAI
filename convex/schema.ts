@@ -18,6 +18,7 @@ export default defineSchema({
   games: defineTable({
     id: v.number(),
     status: v.string(),
+    imageId: v.optional(v.string()),
     settingDescription: v.string(),
     monsterDescription: v.string(),
     monsterHealthPoints: v.number(),

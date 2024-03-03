@@ -1,16 +1,18 @@
 import PinkBox from '../components/PinkBox';
 import BlueWave from '../components/Wave/BlueWave';
 import RoleCard from '../components/RoleCard';
-import { useState, useRef } from 'react';
+import { useState, useEffect, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import host from '../assets/host.webp';
 import player from '../assets/player.png';
 
 const HostGuest = () => {
   const [code, setCode] = useState<string>('');
-
   const navigate = useNavigate();
+
+  const handleChange = (event: { target: { value: SetStateAction<string> } }) => {
+    setCode(event.target.value);
+  };
 
   const selectHost = () => {
     navigate('/game-info');
@@ -24,9 +26,9 @@ const HostGuest = () => {
     <section className="bg-gradient-to-b from-hackathon-purple to-hackathon-gradient h-full w-full">
       <div className="h-full w-full grid grid-rows-hackathon-row-2">
         <div className="row-span-1 flex justify-center self-center">
-          <PinkBox className="px-14 py-4 text-2xl font-body italic font-semibold rounded-lg shadow-md">
+          <div className="px-14 py-4 text-5xl font-body italic font-semibold text-white select-none cursor-default">
             You are a...
-          </PinkBox>
+          </div>
         </div>
         <div className="row-span-1 flex flex-row justify-center self-center h-full w-full z-50">
           <div className="flex flex-row gap-12 h-4/5 items-center relative top-5 w-full justify-center">
@@ -69,6 +71,7 @@ const HostGuest = () => {
                 <div className="pb-2">Beat the monster & Become a hero!</div>
                 <input
                   type="text"
+                  onChange={handleChange}
                   placeholder="Type your invitation code"
                   className="rounded-md py-2 px-3 w-full font-normal shadow-md"></input>
               </div>

@@ -5,12 +5,37 @@ import oval_background from '../assets/ovalbackground.svg';
 import oval_background_purple from '../assets/ovalbackground-purple.svg';
 import BlackWave from '../components/Wave/BlackWave';
 import { DevCard } from '../components/DevCards/DevCard';
+import { SignInButton, useAuth } from '@clerk/clerk-react';
+import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const navigate = useNavigate();
   const handleClick = () => navigate('/host-guest');
+  const user = useAuth();
+
+  const buttonController = () => {
+    if (user.isSignedIn) {
+      return (
+        <button
+          onClick={handleClick}
+          className="mt-[200px] w-full min-w-[100px] py-4 px-5 bg-hackathon-pink hover:bg-hackathon-dark-blue text-white font-bold rounded-lg transform hover:scale-110 transition-transform duration-150 ease-in-out active:button-press">
+          <p className="text-sm sm:text-lg md:text-xl">Get Started</p>
+        </button>
+      );
+    } else {
+      return (
+        <React.Fragment>
+          <SignInButton mode="modal" afterSignInUrl="/host-guest" redirectUrl="/host-guest">
+            <button className="mt-[200px] w-full min-w-[100px] py-4 px-5 bg-hackathon-pink hover:bg-hackathon-dark-blue text-white font-bold rounded-lg transform hover:scale-110 transition-transform duration-150 ease-in-out active:button-press">
+              <p className="text-sm sm:text-lg md:text-xl">Get Started</p>
+            </button>
+          </SignInButton>
+        </React.Fragment>
+      );
+    }
+  };
 
   return (
     <>
@@ -40,11 +65,7 @@ const Home = () => {
 
           {/* Ensuring the button and introduction text are well-positioned and visible */}
           <div className="z-10 flex flex-col items-center">
-            <button
-              onClick={handleClick}
-              className="mt-[200px] w-full min-w-[100px] py-4 px-5 bg-hackathon-pink hover:bg-hackathon-dark-blue text-white font-bold rounded-lg transform hover:scale-110 transition-transform duration-150 ease-in-out active:button-press">
-              <p className="text-sm sm:text-lg md:text-xl">Get Started</p>
-            </button>
+            {buttonController()}
             <p className="text-white font-light mt-4 text-sm sm:text-lg md:text-xl">Start your new adventure</p>
           </div>
         </div>
@@ -64,13 +85,12 @@ const Home = () => {
           <img className="w-[60%] sm:w-[70%] md:w-[80%] mx-auto" src={logo} alt="some-svg" />
         </div>
         <img
-            className="absolute bottom-0 left-1/2 transform -translate-x-1/2 z-[2] w-full max-h-full"
-            src={oval_background_purple}
-            alt="oval-background-svg"
+          className="absolute bottom-0 left-1/2 transform -translate-x-1/2 z-[2] w-full max-h-full"
+          src={oval_background_purple}
+          alt="oval-background-svg"
         />
       </div>
       <div className="bg-gradient-to-b from-hackathon-blue to-hackathon-gradient min-h-full w-full">
-
         <div className="flex flex-col items-center">
           <div className="text-[3rem] sm:text-[4rem] md:text-[5rem] font-bold text-white text-center">Developers</div>
           <div className="flex flex-col sm:flex-row justify-between items-center px-4 w-[95%] sm:w-[80%] mt-[50px] sm:mt-[100px]">
