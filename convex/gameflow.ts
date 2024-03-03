@@ -87,6 +87,88 @@ export const generateFirstScene = action({
   },
 });
 
+export const generateDeadScene = internalAction({
+  args: { gameId: v.number() },
+  handler: async (ctx, args) => {
+    const currentGame = await ctx.runQuery(internal.game.getGame, {
+      gameId: args.gameId,
+    });
+
+    if (currentGame) {
+      const setting = currentGame.currentDescription;
+      const monsterDescription = currentGame.monsterDescription;
+      let prompt = `You are a text-based RPG. 
+        You are in a setting. 
+        This scene is the final scene of the game but that is a bad ending.
+        In JSON format, generate text describing the scene after the monster killed all players in a battle (maximum is 500 characters):
+        
+        string currentDescription
+  
+        Here is a description of the setting: 
+        `;
+      prompt += setting;
+      prompt += `\nThe monster setting is: ${monsterDescription}`;
+
+      // Send the prompt to GPT
+      const completion = await openai.chat.completions.create({
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a text-based RPG designed to output game information in JSON format.',
+          },
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+        model: 'gpt-3.5-turbo',
+        max_tokens: 2000,
+        response_format: { type: 'json_object' },
+      });
+
+      // Get the game info from GPT in JSON format
+      const gameInfo = JSON.parse(completion.choices[0].message.content || '');
+
+      console.log(gameInfo);
+
+      const imgPrompt = `
+                Setting: ${gameInfo.currentDescription}
+                Monster: ${gameInfo.monsterDescription}
+                Style: Realistic
+            `;
+
+      console.log('Image Generation Prompt: \n' + imgPrompt);
+
+      // Generate an image using OpenAI's DALL-E model
+      const imgCompletion = await openai.images.generate({
+        //model: "dall-e-3",
+        prompt: imgPrompt,
+        n: 1,
+        //size: "256x256",
+      });
+
+      // Get the image url from the completion
+      const imageUrl = imgCompletion.data[0].url || '';
+
+      console.log('Image URL: ' + imageUrl);
+
+      // OLD CODE: Downloading the image to Convex storage
+      // Download the image
+      //const imageResponse = await fetch(imageUrl);
+      //const imageBlob = await imageResponse.blob();
+      // Save the image to convex storage
+      //const imgId = await ctx.storage.store(imageBlob);
+      //console.log('Image ID: ' + imgId);
+
+      await ctx.runMutation(internal.game.updateGameScene, {
+        _id: currentGame._id,
+        imageUrl: imageUrl,
+        currentDescription: gameInfo.currentDescription,
+      });
+    }
+  },
+});
+
 export const generateFinalScene = internalAction({
   args: { gameId: v.number(), monsterDeathDescription: v.string() },
   handler: async (ctx, args) => {
@@ -369,8 +451,19 @@ export const monsterResponse = action({
 
               await ctx.runMutation(internal.game.updateGameStatus, {
                 _id: currentMonster._id,
-                status: 'lose',
+                status: 'prompt',
               });
+
+              await ctx
+                .runAction(internal.gameflow.generateFinalScene, {
+                  gameId: args.gameId,
+                })
+                .then(async () => {
+                  await ctx.runMutation(internal.game.updateGameStatus, {
+                    _id: currentMonster._id,
+                    status: 'lose',
+                  });
+                });
             }
           });
       }
