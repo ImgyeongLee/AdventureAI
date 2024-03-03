@@ -2,6 +2,7 @@ import image from '../assets/placeholder-image.png';
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import {ButtonInfo} from "../components/ButtonInfo";
 
 const PlayerMessage = ({ player, message }) => (
   <div className="flex flex-col items-start justify-start mb-7">
@@ -37,6 +38,8 @@ export const GameHost = () => {
       message: 'k',
     },
   ]);
+  const [isHoveringStart, setIsHoveringStart] = useState(false);
+  const [isHoveringEnd, setIsHoveringEnd] = useState(false);
 
   const handleSendMessage = (e) => {
     e.preventDefault();
@@ -91,19 +94,27 @@ export const GameHost = () => {
             </motion.button>
           </form>
           <div className="flex flex-col items-center">
-            <div className="flex flex-row justify-center space-x-2 mt-5">
+            <div className="flex flex-row justify-center space-x-2 mt-5 relative">
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="p-[10px] border-0 rounded-[10px] bg-hackathon-purple">
+                  onHoverStart={() => setIsHoveringStart(true)}
+                  onHoverEnd={() => setIsHoveringStart(false)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="p-[10px] border-0 rounded-[10px] bg-hackathon-purple"
+              >
                 Start Game
+                {isHoveringStart && <ButtonInfo text={"Starts the game"} />}
               </motion.button>
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="p-[10px] border-0 rounded-[10px] bg-hackathon-purple">
+                  onHoverStart={() => setIsHoveringEnd(true)}
+                  onHoverEnd={() => setIsHoveringEnd(false)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="p-[10px] border-0 rounded-[10px] bg-hackathon-purple"
+              >
                 End Game
               </motion.button>
+              {isHoveringEnd && <ButtonInfo text={"Ends the game"} />}
             </div>
           </div>
         </div>
