@@ -13,6 +13,7 @@ export const generateFirstScene = action({
     });
 
     if (currentGame) {
+      console.log('Current Game is == ', currentGame);
       const setting = currentGame.currentDescription;
       let prompt = `You are a text-based RPG. 
       You are in a setting. 
@@ -20,6 +21,7 @@ export const generateFirstScene = action({
       In JSON format, generate text about a cool starting battle scene (maximum is 500 characters):
       
       string currentDescription
+      string monsterDescription
 
       Here is a description of the setting: 
       `;
@@ -45,7 +47,7 @@ export const generateFirstScene = action({
       // Get the game info from GPT in JSON format
       const gameInfo = JSON.parse(completion.choices[0].message.content || '');
 
-      console.log(gameInfo);
+      console.log('Game Info == ', gameInfo);
 
       const imgPrompt = `
               Setting: ${gameInfo.currentDescription}
@@ -180,49 +182,93 @@ export const monsterResponse = action({
     });
 
     if (currentMonster && currentUser) {
+      let monsterHP = currentMonster.monsterHealthPoints;
+      let userHP = currentUser.healthPoints;
+
+      // User phase (User -> Monster)
       if (args.usingSkill) {
-        await ctx.runMutation(internal.message.createMessage, {
-          userId: 'System',
-          gameId: args.gameId,
-          sender: 'System',
-          body: `${currentUser.name} used their special skill against the monster!\n(${currentUser.skillName}: ${currentUser.skillDescription})`,
-        });
+        const isUserSuccessSkill = Math.floor(Math.random() * 101) < currentUser.skillSuccessRate;
+
+        // If the user used skill
+        if (isUserSuccessSkill) {
+          await ctx.runMutation(internal.message.createMessage, {
+            userId: 'System',
+            gameId: args.gameId,
+            sender: 'System',
+            body: `${currentUser.name} used their special skill against the monster!\n(${currentUser.skillName}: ${currentUser.skillDescription})\nMonster: (-${currentUser.skillAttackPoints})`,
+          });
+
+          monsterHP -= currentUser.skillAttackPoints;
+
+          if (monsterHP <= 0) {
+            // Create a message that the player killed the monster
+            await ctx.runMutation(internal.message.createMessage, {
+              userId: 'System',
+              gameId: args.gameId,
+              sender: 'System',
+              body: `${currentUser.name} killed the monster!`,
+            });
+
+            await ctx.runMutation(internal.game.attackMonster, {
+              _id: currentMonster._id,
+              currentHP: monsterHP,
+            });
+
+            let monsterDeathDesc = `The monster died.\nMonster: ${currentMonster.monsterDescription}\n`;
+            if (args.usingSkill) {
+              monsterDeathDesc += `The monster died from ${currentUser.name}'s special skill.\n`;
+              monsterDeathDesc += `(${currentUser.skillName}: ${currentUser.skillDescription})`;
+            }
+
+            // Final scene generation
+            await ctx.runMutation(internal.game.generateFinalScene, {
+              gameId: args.gameId,
+              monsterDeathDescription: monsterDeathDesc,
+            });
+
+            // Change the game status done
+            await ctx.runMutation(internal.game.updateGameStatus, {
+              _id: currentMonster._id,
+              status: 'win',
+            });
+
+            return;
+          } else {
+            await ctx.runMutation(internal.game.attackMonster, {
+              _id: currentMonster._id,
+              currentHP: monsterHP,
+            });
+          }
+          // When they failed
+        } else {
+          await ctx.runMutation(internal.message.createMessage, {
+            userId: 'System',
+            gameId: args.gameId,
+            sender: 'System',
+            body: `${currentUser.name} tried to use their special skill but it failed.`,
+          });
+        }
       } else {
         await ctx.runMutation(internal.message.createMessage, {
           userId: 'System',
           gameId: args.gameId,
           sender: 'System',
-          body: `${currentUser.name} attacked the monster!`,
-        });
-      }
-    }
-
-    let monsterHP = currentMonster.monsterHealthPoints;
-    let userHP = currentUser.healthPoints;
-
-    // User phase (User -> Monster)
-    if (args.usingSkill) {
-      const isUserSuccessSkill = Math.floor(Math.random() * 101) < currentUser.skillSuccessRate;
-
-      // If the user used skill
-      if (isUserSuccessSkill) {
-        await ctx.runMutation(internal.message.createMessage, {
-          userId: 'System',
-          gameId: args.gameId,
-          sender: 'System',
-          body: `${currentUser.name} used their special skill against the monster!\n(${currentUser.skillName}: ${currentUser.skillDescription})\nMonster: (-${currentUser.skillAttackPoints})`,
+          body: `${currentUser.name} attacked the monster!\nMonster: (-${currentUser.attackPoints})`,
         });
 
-        monsterHP -= currentUser.skillAttackPoints;
+        monsterHP -= currentUser.attackPoints;
 
         if (monsterHP <= 0) {
-
-          // Create a message that the player killed the monster
           await ctx.runMutation(internal.message.createMessage, {
             userId: 'System',
             gameId: args.gameId,
             sender: 'System',
             body: `${currentUser.name} killed the monster!`,
+          });
+
+          await ctx.runMutation(internal.game.attackMonster, {
+            _id: currentMonster._id,
+            currentHP: monsterHP,
           });
 
           let monsterDeathDesc = `The monster died.\nMonster: ${currentMonster.monsterDescription}\n`;
@@ -242,6 +288,7 @@ export const monsterResponse = action({
             _id: currentMonster._id,
             status: 'win',
           });
+
           return;
         } else {
           await ctx.runMutation(internal.game.attackMonster, {
@@ -249,67 +296,52 @@ export const monsterResponse = action({
             currentHP: monsterHP,
           });
         }
-        // When they failed
+      }
+
+      // Monster Phase
+      const isMonsterSkill = Math.floor(Math.random() * 101) < 30;
+
+      if (isMonsterSkill) {
+        const isMonsterSuccessSkill = Math.floor(Math.random() * 101) / 100 < currentMonster.monsterSkillSuccessRate;
+        if (isMonsterSuccessSkill) {
+          userHP -= currentMonster.monsterSkillAttackPoints;
+          await ctx.runMutation(internal.message.createMessage, {
+            userId: 'System',
+            gameId: args.gameId,
+            sender: 'System',
+            body: `The monster attacked ${currentUser.name} with a special skill!\n${currentMonster.monsterSkillDescription}\n${currentUser.name}: (-${currentMonster.monsterSkillAttackPoints})`,
+          });
+        } else {
+          await ctx.runMutation(internal.message.createMessage, {
+            userId: 'System',
+            gameId: args.gameId,
+            sender: 'System',
+            body: `The monster tried to use a special skill but it failed.`,
+          });
+        }
       } else {
+        userHP -= currentMonster.monsterAttackPoints;
         await ctx.runMutation(internal.message.createMessage, {
           userId: 'System',
           gameId: args.gameId,
           sender: 'System',
-          body: `${currentUser.name} tried to use their special skill but it failed.`,
+          body: `The monster attacked ${currentUser.name}!!\n${currentUser.name}: (-${currentMonster.monsterAttackPoints})`,
         });
       }
-    } else {
-      await ctx.runMutation(internal.message.createMessage, {
-        userId: 'System',
-        gameId: args.gameId,
-        sender: 'System',
-        body: `${currentUser.name} attacked the monster!\nMonster: (-${currentUser.attackPoints})`,
-      });
-    }
 
-    // Monster Phase
-    const isMonsterSkill = Math.floor(Math.random() * 101) < 30;
-
-    if (isMonsterSkill) {
-      const isMonsterSuccessSkill = Math.floor(Math.random() * 101) / 100 < currentMonster.monsterSkillSuccessRate;
-      if (isMonsterSuccessSkill) {
-        userHP -= currentMonster.monsterSkillAttackPoints;
+      if (userHP <= 0) {
         await ctx.runMutation(internal.message.createMessage, {
           userId: 'System',
           gameId: args.gameId,
           sender: 'System',
-          body: `The monster attacked ${currentUser.name} with a special skill!\n${currentMonster.monsterSkillDescription}\n${currentUser.name}: (-${currentMonster.monsterSkillAttackPoints})`,
-        });
-      } else {
-        await ctx.runMutation(internal.message.createMessage, {
-          userId: 'System',
-          gameId: args.gameId,
-          sender: 'System',
-          body: `The monster tried to use a special skill but it failed.`,
+          body: `${currentUser.name} is dead.`,
         });
       }
-    } else {
-      userHP -= currentMonster.monsterAttackPoints;
-      await ctx.runMutation(internal.message.createMessage, {
-        userId: 'System',
-        gameId: args.gameId,
-        sender: 'System',
-        body: `The monster attacked ${currentUser.name}!!\n${currentUser.name}: (-${currentMonster.monsterAttackPoints})`,
+
+      await ctx.runMutation(internal.user.attackUser, {
+        _id: currentUser._id,
+        currentHP: userHP,
       });
     }
-
-    if (userHP <= 0) {
-      await ctx.runMutation(internal.message.createMessage, {
-        userId: 'System',
-        gameId: args.gameId,
-        sender: 'System',
-        body: `${currentUser.name} is dead.`,
-      });
-    }
-
-    await ctx.runMutation(internal.user.attackUser, {
-      _id: currentUser._id,
-      currentHP: userHP,
-    });
   },
 });
