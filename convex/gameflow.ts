@@ -280,14 +280,21 @@ export const monsterResponse = action({
           // Change the game status done
           await ctx.runMutation(internal.game.updateGameStatus, {
             _id: currentMonster._id,
-            status: 'win',
+            status: 'prompt',
           });
 
           // Final scene generation
-          await ctx.runAction(internal.gameflow.generateFinalScene, {
-            gameId: args.gameId,
-            monsterDeathDescription: monsterDeathDesc,
-          });
+          await ctx
+            .runAction(internal.gameflow.generateFinalScene, {
+              gameId: args.gameId,
+              monsterDeathDescription: monsterDeathDesc,
+            })
+            .then(async () => {
+              await ctx.runMutation(internal.game.updateGameStatus, {
+                _id: currentMonster._id,
+                status: 'win',
+              });
+            });
 
           return;
         } else {
@@ -329,19 +336,39 @@ export const monsterResponse = action({
         });
       }
 
-      if (userHP <= 0) {
-        await ctx.runMutation(internal.message.createMessage, {
-          userId: 'System',
-          gameId: args.gameId,
-          sender: 'System',
-          body: `${currentUser.name} is dead.`,
-        });
-      }
-
       await ctx.runMutation(internal.user.attackUser, {
         _id: currentUser._id,
         currentHP: userHP,
       });
+
+      if (userHP <= 0) {
+        await ctx
+          .runMutation(internal.message.createMessage, {
+            userId: 'System',
+            gameId: args.gameId,
+            sender: 'System',
+            body: `${currentUser.name} is dead.`,
+          })
+          .then(async () => {
+            const isAllDead = await ctx.runQuery(internal.game.areAllPlayersDead, {
+              gameId: args.gameId,
+            });
+
+            if (isAllDead) {
+              await ctx.runMutation(internal.message.createMessage, {
+                userId: 'System',
+                gameId: args.gameId,
+                sender: 'System',
+                body: 'Everyone is dead.',
+              });
+
+              await ctx.runMutation(internal.game.updateGameStatus, {
+                _id: currentMonster._id,
+                status: 'lose',
+              });
+            }
+          });
+      }
     }
   },
 });

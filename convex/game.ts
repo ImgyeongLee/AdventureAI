@@ -236,7 +236,7 @@ export const attackMonster = internalMutation({
   },
 });
 
-export const areAllPlayersDead = query({
+export const areAllPlayersDead = internalQuery({
   args: { gameId: v.number() },
   handler: async (ctx, args) => {
     const players = await ctx.db
