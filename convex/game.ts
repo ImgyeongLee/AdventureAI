@@ -1,11 +1,23 @@
 //"use node";
 
 import { v } from 'convex/values';
-import { action, internalMutation, query } from './_generated/server';
+import { action, internalMutation, internalQuery, query } from './_generated/server';
 import { internal } from './_generated/api';
 import { OpenAI } from 'openai';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || '' }); //TODO: Make sure api key is not an empty string!
+
+export const getGame = internalQuery({
+  args: { gameId: v.number() },
+  handler: async (ctx, args) => {
+    const currentGame = await ctx.db
+      .query('games')
+      .filter((q) => q.eq(q.field('id'), args.gameId))
+      .first();
+
+    return currentGame;
+  },
+});
 
 export const getGameInfo = query({
   args: { gameId: v.number() },
@@ -62,6 +74,48 @@ export const insertGame = internalMutation(
     });
   }
 );
+
+export const updateGameScene = internalMutation({
+  args: {
+    _id: v.id('games'),
+    imageId: v.id('_storage'),
+    currentDescription: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args._id, {
+      imageId: args.imageId,
+      currentDescription: args.currentDescription,
+    });
+  },
+});
+
+export const updateGameStatus = internalMutation({
+  args: {
+    _id: v.id('games'),
+    status: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args._id, {
+      status: args.status,
+    });
+  },
+});
+
+export const updateStatus = action({
+  args: { gameId: v.number(), status: v.string() },
+  handler: async (ctx, args) => {
+    const currentGame = await ctx.runQuery(internal.game.getGame, {
+      gameId: args.gameId,
+    });
+
+    if (currentGame) {
+      await ctx.runMutation(internal.game.updateGameStatus, {
+        _id: currentGame._id,
+        status: args.status,
+      });
+    }
+  },
+});
 
 export const createGame = action({
   args: { description: v.string() },
@@ -170,23 +224,14 @@ export const createGame = action({
   },
 });
 
-export const monsterResponse = action({
-    args: { gameId : v.number(), userId: v.string(), usingSkill: v.boolean() },
-    handler: async (ctx, args) => {
-        let log = "";
-
-        // Apply the user's attack points to the monster's health points // TODO
-        
-        // Check if the monster is dead // TODO
-
-        // Chose a response randomly (30% chance of using skill) // TODO
-
-        // Apply the monster's attack points to the user's health points // TODO
-
-        // Generate response message from the log using GPT //TODO
-
-        let msg = "The monster did not respond."
-
-        return { message: msg, monsterDied: false, userDied: false }
-    }
+export const attackMonster = internalMutation({
+  args: {
+    _id: v.id('games'),
+    currentHP: v.number(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args._id, {
+      monsterHealthPoints: args.currentHP,
+    });
+  },
 });

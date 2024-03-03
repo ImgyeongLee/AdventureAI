@@ -89,3 +89,15 @@ export const setUserHost = internalMutation({
     });
   },
 });
+
+export const attackUser = internalMutation({
+  args: {
+    _id: v.id('users'),
+    currentHP: v.number(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args._id, {
+      healthPoints: args.currentHP,
+    });
+  },
+});
