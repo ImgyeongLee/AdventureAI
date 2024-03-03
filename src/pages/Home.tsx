@@ -171,17 +171,17 @@ const Home = () => {
             <div className="flex-1 mb-4 sm:mb-0">
               <DevCard imageLink={"https://avatars.githubusercontent.com/u/16065188?v=4"}/>
               <div className="text-[1.2rem] sm:text-[1.5rem] text-center text-white mt-[30px]">Derek Williams</div>
-              <div className="text-[1rem] sm:text-[1.2rem] text-center text-white mt-[10px]">{"<"}Back End{">"}</div>
+              <div className="text-[1rem] sm:text-[1.2rem] text-center text-white mt-[10px]">{"< "}Back End{" >"}</div>
             </div>
             <div className="flex-1 mb-4 sm:mb-0">
               <DevCard imageLink={"https://avatars.githubusercontent.com/u/72935373?v=4"}/>
               <div className="text-[1.2rem] sm:text-[1.5rem] text-center text-white mt-[30px]">Hla Htun</div>
-              <div className="text-[1rem] sm:text-[1.2rem] text-center text-white mt-[10px]">{"<"}Front End{">"}</div>
+              <div className="text-[1rem] sm:text-[1.2rem] text-center text-white mt-[10px]">{"< "}Front End{" >"}</div>
             </div>
             <div className="flex-1">
               <DevCard imageLink={"https://avatars.githubusercontent.com/u/81654344?v=4"}/>
               <div className="text-[1.2rem] sm:text-[1.5rem] text-center text-white mt-[30px]">Imgyeong Lee</div>
-              <div className="text-[1rem] sm:text-[1.2rem] text-center text-white mt-[10px]">{"<"}Front End + Back End{">"}</div>
+              <div className="text-[1rem] sm:text-[1.2rem] text-center text-white mt-[10px]">{"< "}Front End + Back End{" >"}</div>
             </div>
           </div>
           <div className="deco">
