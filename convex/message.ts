@@ -1,4 +1,4 @@
-import { query, mutation } from './_generated/server';
+import { query, internalMutation } from './_generated/server';
 import { v } from 'convex/values';
 
 export const getMessages = query({
@@ -11,7 +11,7 @@ export const getMessages = query({
   },
 });
 
-export const createMessage = mutation({
+export const createMessage = internalMutation({
   args: { gameId: v.number(), sender: v.string(), body: v.string() },
   handler: async (ctx, args) => {
     const newMessageId = await ctx.db.insert('messages', {

@@ -29,7 +29,7 @@ export default defineSchema({
   }).index('by_gameId', ['id']),
   messages: defineTable({
     gameId: v.number(),
-    sender: v.string(),
+    sender: v.optional(v.string()),
     body: v.string(),
   }),
 });

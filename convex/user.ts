@@ -1,4 +1,4 @@
-import { query, mutation, internalMutation } from './_generated/server';
+import { query, mutation, internalMutation, internalQuery } from './_generated/server';
 import { v } from 'convex/values';
 
 export const getUsers = query({
@@ -7,13 +7,25 @@ export const getUsers = query({
   },
 });
 
-export const getUser = query({
+// export const getUser = query({
+//   args: { userId: v.string() },
+//   handler: async (ctx, args) => {
+//     return ctx.db
+//       .query('users')
+//       .filter((q) => q.eq(q.field('id'), args.userId))
+//       .first();
+//   },
+// });
+
+export const getUser = internalQuery({
   args: { userId: v.string() },
   handler: async (ctx, args) => {
-    return ctx.db
+    const currentUser = await ctx.db
       .query('users')
       .filter((q) => q.eq(q.field('id'), args.userId))
       .first();
+
+    if (currentUser) return currentUser;
   },
 });
 
