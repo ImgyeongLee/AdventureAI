@@ -12,10 +12,9 @@ export const getMessages = query({
 });
 
 export const createMessage = mutation({
-  args: { userId: v.string(), gameId: v.number(), sender: v.string(), body: v.string() },
+  args: { gameId: v.number(), sender: v.string(), body: v.string() },
   handler: async (ctx, args) => {
     const newMessageId = await ctx.db.insert('messages', {
-      userId: args.userId,
       gameId: args.gameId,
       sender: args.sender,
       body: args.body,

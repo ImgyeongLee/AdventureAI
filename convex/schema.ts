@@ -29,7 +29,6 @@ export default defineSchema({
   }).index('by_gameId', ['id']),
   messages: defineTable({
     gameId: v.number(),
-    userId: v.string(),
     sender: v.string(),
     body: v.string(),
   }),
