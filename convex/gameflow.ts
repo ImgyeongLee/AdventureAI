@@ -221,16 +221,23 @@ export const monsterResponse = action({
             // Change the game status done
             await ctx.runMutation(internal.game.updateGameStatus, {
               _id: currentMonster._id,
-              status: 'win',
+              status: 'prompt',
             });
 
             // Final scene generation
-            await ctx.runAction(internal.gameflow.generateFinalScene, {
-              gameId: args.gameId,
-              monsterDeathDescription: monsterDeathDesc,
-            });
+            await ctx
+              .runAction(internal.gameflow.generateFinalScene, {
+                gameId: args.gameId,
+                monsterDeathDescription: monsterDeathDesc,
+              })
+              .then(async () => {
+                await ctx.runMutation(internal.game.updateGameStatus, {
+                  _id: currentMonster._id,
+                  status: 'win',
+                });
 
-            return;
+                return;
+              });
           } else {
             await ctx.runMutation(internal.game.attackMonster, {
               _id: currentMonster._id,
