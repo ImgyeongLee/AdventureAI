@@ -8,15 +8,19 @@ import { DevCard } from '../components/DevCards/DevCard';
 import { SignInButton, useAuth } from '@clerk/clerk-react';
 import { motion } from 'framer-motion';
 import React from 'react';
-
 import { useNavigate } from 'react-router-dom';
-
-
+import { useAction } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 
 const Home = () => {
   const navigate = useNavigate();
-  const handleClick = () => navigate('/host-guest');
   const user = useAuth();
+  const userAction = useAction(api.action.create);
+  const handleClick = () => {
+    console.log('Called?');
+    if (user.userId) userAction({ userId: user.userId });
+    navigate('/host-guest');
+  };
 
   const buttonController = () => {
     if (user.isSignedIn) {
@@ -30,7 +34,7 @@ const Home = () => {
     } else {
       return (
         <React.Fragment>
-          <SignInButton mode="modal" afterSignInUrl="/host-guest" redirectUrl="/host-guest">
+          <SignInButton mode="modal" afterSignInUrl="/" redirectUrl="/">
             <button className="mt-[200px] w-full min-w-[100px] py-4 px-5 bg-hackathon-pink hover:bg-hackathon-dark-blue text-white font-bold rounded-lg transform hover:scale-110 transition-transform duration-150 ease-in-out active:button-press">
               <p className="text-sm sm:text-lg md:text-xl">Get Started</p>
             </button>
@@ -40,7 +44,7 @@ const Home = () => {
     }
   };
 
-  const text = "Start your new adventure!"
+  const text = 'Start your new adventure!';
 
   const stardustVariantL = {
     hidden: { scale: 0, opacity: 0, rotate: 0 },
@@ -48,8 +52,8 @@ const Home = () => {
       scale: [1, 1.3, 1],
       opacity: [0, 1, 0.5, 1],
       rotate: [0, 10, -10, 0],
-      transition: { duration: 1.5, ease: "easeInOut" }
-    }
+      transition: { duration: 1.5, ease: 'easeInOut' },
+    },
   };
 
   const stardustVariantR = {
@@ -58,8 +62,8 @@ const Home = () => {
       scale: [1, 1.7, 1],
       opacity: [0, 1, 0.7, 1],
       rotate: [0, 20, -20, 0],
-      transition: { duration: 2, ease: "easeInOut" }
-    }
+      transition: { duration: 2, ease: 'easeInOut' },
+    },
   };
 
   const calculateDelay = (index) => 1.3 + index * 0.05; // Starts after 2 seconds, then each letter appears 0.05s after the previous one
@@ -69,17 +73,25 @@ const Home = () => {
       <div className="bg-gradient-to-b from-hackathon-purple to-hackathon-gradient min-h-screen w-full overflow-hidden">
         <div className="relative flex justify-center items-center min-h-screen">
           <motion.img
-              className="absolute top-[30%] left-[30%] w-[5%] z-10" src={stardust} alt="Stardust-svg"
-              variants={stardustVariantL}
-              initial="hidden"
-              whileInView={"visible"}
+            className="absolute top-[30%] left-[30%] w-[5%] z-10"
+            src={stardust}
+            alt="Stardust-svg"
+            variants={stardustVariantL}
+            initial="hidden"
+            whileInView={'visible'}
           />
-          <img className="absolute top-[15%] left-1/2 transform -translate-x-1/2 w-[20%] z-20" src={logo} alt={"logo"}/>
+          <img
+            className="absolute top-[15%] left-1/2 transform -translate-x-1/2 w-[20%] z-20"
+            src={logo}
+            alt={'logo'}
+          />
           <motion.img
-              className="absolute top-[10%] right-[30%] w-[7%] z-10" src={stardust} alt="Stardust-svg"
-              variants={stardustVariantR}
-              initial="hidden"
-              whileInView={"visible"}
+            className="absolute top-[10%] right-[30%] w-[7%] z-10"
+            src={stardust}
+            alt="Stardust-svg"
+            variants={stardustVariantR}
+            initial="hidden"
+            whileInView={'visible'}
           />
 
           <img
@@ -100,25 +112,24 @@ const Home = () => {
 
           <div className="z-10 flex flex-col items-center">
             {buttonController()}
-            <div className={"mt-[20px] text-white font-bold text-[1rem] sm:text-[1rem] md:text-[1.5rem]"}>
-              {text.split("").map((letter, index) => (
-                  <motion.span
-                      key={index}
-                      initial={{
-                        opacity: 0,
-                        y: -20
-                      }}
-                      animate={{
-                        y: 0,
-                        opacity: 1,
-                        transition: {
-                          delay: calculateDelay(index),
-                          duration: 0.1,
-                        }
-                      }}
-                  >
-                    {letter}
-                  </motion.span>
+            <div className={'mt-[20px] text-white font-bold text-[1rem] sm:text-[1rem] md:text-[1.5rem]'}>
+              {text.split('').map((letter, index) => (
+                <motion.span
+                  key={index}
+                  initial={{
+                    opacity: 0,
+                    y: -20,
+                  }}
+                  animate={{
+                    y: 0,
+                    opacity: 1,
+                    transition: {
+                      delay: calculateDelay(index),
+                      duration: 0.1,
+                    },
+                  }}>
+                  {letter}
+                </motion.span>
               ))}
             </div>
           </div>
@@ -136,7 +147,7 @@ const Home = () => {
           </div>
         </div>
         <div className="svgDiv mx-auto mt-[50px] sm:mt-[75px] md:mt-[100px]">
-          <img className="w-[60%] sm:w-[70%] md:w-[80%] mx-auto" src={logo} alt={"logo"}/>
+          <img className="w-[60%] sm:w-[70%] md:w-[80%] mx-auto" src={logo} alt={'logo'} />
         </div>
         <img
           className="absolute bottom-0 left-1/2 transform -translate-x-1/2 z-[2] w-full max-h-full"
@@ -172,7 +183,7 @@ const Home = () => {
               style={{ marginRight: '-100%' }}
               variants={stardustVariantL}
               initial="hidden"
-              whileInView={"visible"}
+              whileInView={'visible'}
             />
             <motion.img
               className="relative w-[65%] sm:w-[65%] md:w-[65%] top-[-45vh] sm:top-[-45vh] md:top-[-45vh] right-[-47vw] sm:right-[-47vw] md:right-[-47vw] z-10"
@@ -181,7 +192,7 @@ const Home = () => {
               style={{ marginLeft: '-100%' }}
               variants={stardustVariantL}
               initial="hidden"
-              whileInView={"visible"}
+              whileInView={'visible'}
             />
           </div>
         </div>
