@@ -169,19 +169,19 @@ const Home = () => {
           <div className="text-[3rem] sm:text-[4rem] md:text-[5rem] font-bold text-white text-center">Developers</div>
           <div className="flex flex-col sm:flex-row justify-between items-center px-4 w-[95%] sm:w-[80%] mt-[50px] sm:mt-[100px]">
             <div className="flex-1 mb-4 sm:mb-0">
-              <DevCard />
+              <DevCard imageLink={"https://avatars.githubusercontent.com/u/16065188?v=4"}/>
               <div className="text-[1.2rem] sm:text-[1.5rem] text-center text-white mt-[30px]">Derek Williams</div>
-              <div className="text-[1rem] sm:text-[1.1rem] text-center text-white">Position</div>
+              <div className="text-[1rem] sm:text-[1.2rem] text-center text-white mt-[10px]">{"<"}Back End{">"}</div>
             </div>
             <div className="flex-1 mb-4 sm:mb-0">
-              <DevCard />
+              <DevCard imageLink={"https://avatars.githubusercontent.com/u/72935373?v=4"}/>
               <div className="text-[1.2rem] sm:text-[1.5rem] text-center text-white mt-[30px]">Hla Htun</div>
-              <div className="text-[1rem] sm:text-[1.1rem] text-center text-white">Position</div>
+              <div className="text-[1rem] sm:text-[1.2rem] text-center text-white mt-[10px]">{"<"}Front End{">"}</div>
             </div>
             <div className="flex-1">
-              <DevCard />
+              <DevCard imageLink={"https://avatars.githubusercontent.com/u/81654344?v=4"}/>
               <div className="text-[1.2rem] sm:text-[1.5rem] text-center text-white mt-[30px]">Imgyeong Lee</div>
-              <div className="text-[1rem] sm:text-[1.1rem] text-center text-white">Position</div>
+              <div className="text-[1rem] sm:text-[1.2rem] text-center text-white mt-[10px]">{"<"}Front End + Back End{">"}</div>
             </div>
           </div>
           <div className="deco">
