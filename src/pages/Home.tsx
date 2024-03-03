@@ -11,7 +11,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAction } from 'convex/react';
 import { api } from '../../convex/_generated/api';
-import AnimatedPath from "../components/AnimatedPath";
+import AnimatedPath from '../components/AnimatedPath';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -168,7 +168,7 @@ const Home = () => {
           </div>
         </div>
         <div className="mx-auto relative flex items-start md:mt-0">
-          <AnimatedPath className="w-[60%] sm:w-[70%] md:w-[80%] mx-auto relative z-10"/>
+          <AnimatedPath className="w-[60%] sm:w-[70%] md:w-[80%] mx-auto relative z-10" />
         </div>
         <img
           className="absolute bottom-0 left-1/2 transform -translate-x-1/2 z-[2] w-full max-h-full"
