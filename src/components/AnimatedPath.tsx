@@ -33,8 +33,7 @@ export default function AnimatedPath() {
 
     return (
         <motion.svg
-            width="300"
-            height="300"
+            className={"w-[30vw] h-[100%]"}
             viewBox="0 0 600 600"
             initial="hidden"
             whileInView="visible"
