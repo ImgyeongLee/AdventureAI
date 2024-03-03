@@ -78,7 +78,9 @@ const Role = () => {
                 <div className="font-bold pb-2 text-3xl">Health Points</div>
                 <input
                   onChange={handleHP}
-                  type="text"
+                  type="number"
+                  min={0}
+                  max={100}
                   placeholder="Type your Health Point"
                   className="w-full rounded-md p-3"
                 />
