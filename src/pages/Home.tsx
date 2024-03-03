@@ -70,7 +70,7 @@ const Home = () => {
     }
   };
 
-  const calculateDelay = (index) => 1.3 + index * 0.05; // Starts after 2 seconds, then each letter appears 0.05s after the previous one
+  const calculateDelay = (index) => 1.3 + index * 0.05;
 
   return (
     <>
