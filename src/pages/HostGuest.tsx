@@ -41,7 +41,7 @@ const HostGuest = () => {
                 />
               </div>
               <div className="self-center text-4xl italic font-semibold font-body cursor-default p-4 text-center">
-                The Host
+                Host
               </div>
               <div className="px-10 pb-6 text-center text-lg font-body cursor-default select-none">
                 <div>Can direct the overall game</div>
@@ -64,7 +64,7 @@ const HostGuest = () => {
                 />
               </div>
               <div className="self-center text-4xl italic font-semibold font-body cursor-default p-4 text-center">
-                The Player
+                Player
               </div>
               <div className="px-10 pb-6 text-center text-lg font-medium font-body cursor-default select-none">
                 <div>Only can play the game</div>
