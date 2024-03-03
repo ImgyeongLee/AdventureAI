@@ -112,7 +112,7 @@ const Home = () => {
 
           <div className="z-10 flex flex-col items-center">
             {buttonController()}
-            <div className={'mt-[20px] text-white font-bold text-[1rem] sm:text-[1rem] md:text-[1.5rem]'}>
+            <div className={'mt-[20px] text-white font-bold text-[1rem] sm:text-[1rem] md:text-[1.5rem] cursor-default'}>
               {text.split('').map((letter, index) => (
                 <motion.span
                   key={index}
@@ -137,7 +137,7 @@ const Home = () => {
       </div>
       <div className="bg-gradient-to-b from-hackathon-dark-blue to-hackathon-gradient min-h-screen relative z-[1] grid grid-cols-1 md:grid-cols-2 items-start gap-4 p-4 md:p-8">
         <div className="flex flex-col items-center text-center">
-          <div className="catch flex flex-col justify-center items-center text-white w-full sm:w-[90%] md:w-[80%] lg:w-[70%] max-w-[500px] mx-auto h-full sm:h-auto">
+          <div className="catch flex flex-col justify-center items-center text-white w-full sm:w-[90%] md:w-[80%] lg:w-[70%] max-w-[500px] mx-auto h-full sm:h-auto cursor-default">
             <div className="hidden sm:flex flex-col items-start text-left w-full">
               <p className="font-bold text-[2rem] sm:text-[3rem] md:text-[4rom] lg:text-[5rem] mb-4">Customize</p>
               <p className="font-bold text-[2rem] sm:text-[3rem] md:text-[4rom] lg:text-[5rem] mb-4">Your Own</p>
@@ -161,7 +161,7 @@ const Home = () => {
         />
       </div>
       <div className="bg-gradient-to-b from-hackathon-blue to-hackathon-gradient min-h-full w-full">
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center cursor-default">
           <div className="text-[3rem] sm:text-[4rem] md:text-[5rem] font-bold text-white text-center">Developers</div>
           <div className="flex flex-col sm:flex-row justify-between items-center px-4 w-[95%] sm:w-[80%] mt-[50px] sm:mt-[100px]">
             <div className="flex-1 mb-4 sm:mb-0">
