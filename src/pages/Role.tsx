@@ -16,6 +16,7 @@ const Role = () => {
   const [hp, setHP] = useState<number>(0);
   const [skill, setSkill] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [numChar, serNumChar] = useState<number>(0);
 
   const handleName = (event: { target: { value: SetStateAction<string> } }) => {
     setName(event.target.value);
@@ -27,6 +28,7 @@ const Role = () => {
 
   const handleSkill = (event: { target: { value: SetStateAction<string> } }) => {
     setSkill(event.target.value);
+    serNumChar(event.target.value.length);
   };
 
   const handleClick = () => {
@@ -88,7 +90,7 @@ const Role = () => {
                   placeholder="Describe yourself to create your own skill (e.g. I am a little bad boy)"
                   className="w-full h-full rounded-lg p-3 resize-none"
                 />
-                <div className="text-end">/ 2500</div>
+                <div className="text-end">{numChar} / 1000</div>
               </div>
             </div>
             <button
