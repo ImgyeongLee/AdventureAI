@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, FormEventHandler, MouseEventHandler } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAction, useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { useAuth } from '@clerk/clerk-react';
@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { PuffLoader } from 'react-spinners';
 import placeholderImage from '../assets/placeholder-image.png';
 import React from 'react';
+import { EndGame } from '../components/EndGame';
 
 const PlayerMessage = ({ player, message }) => (
   <div className="flex flex-col items-start justify-start mb-7">
@@ -44,6 +45,8 @@ export const GamePlay = () => {
   const [isStart, setIsStart] = useState<boolean>(false);
   const [isHost, setIsHost] = useState<boolean>(false);
   const [isDead, setIsDead] = useState<boolean>(false);
+  const [isToggle, setIsToggle] = useState<boolean>(false);
+  const [isEnd, setIsEnd] = useState<boolean>(false);
   const [newMessage, setNewMessage] = useState('');
   const messages = useQuery(api.message.getMessages, { gameId: Number(gameId) });
   const gameInfo = useQuery(api.game.getGameInfo, { gameId: Number(gameId) });
@@ -52,8 +55,8 @@ export const GamePlay = () => {
   const updateStatus = useAction(api.game.updateStatus);
   const createFirstScene = useAction(api.gameflow.generateFirstScene);
   const attackAction = useAction(api.gameflow.monsterResponse);
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isTextLoading, setIsTextLoading] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [hp, setHp] = useState(100); // use setHp value obtained from backend to update the hp
   const gameImage = useQuery(api.https.getImageURL, { gameId: Number(gameId) }) || placeholderImage;
@@ -146,19 +149,17 @@ export const GamePlay = () => {
 
   const handleClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
-    setIsStart(!isStart);
 
     if (!isStart) {
+      setIsStart(!isStart);
       createMessage({ gameId: Number(gameId), body: 'The game is started!', userId: 'System' });
-      updateStatus({ gameId: Number(gameId), status: 'battle' }).then(() => {
-        setIsTextLoading(true);
+      updateStatus({ gameId: Number(gameId), status: 'prompt' }).then(() => {
         createFirstScene({ gameId: Number(gameId) }).then(() => {
-          setIsTextLoading(false);
+          updateStatus({ gameId: Number(gameId), status: 'battle' });
         });
       });
     } else {
-      createMessage({ gameId: Number(gameId), body: 'The game ended.', userId: 'System' });
-      updateStatus({ gameId: Number(gameId), status: 'end' });
+      setIsToggle(true);
     }
   };
 
@@ -198,15 +199,31 @@ export const GamePlay = () => {
     checkHP();
   }, [messages]);
 
+  useEffect(() => {
+    if (isEnd) {
+      createMessage({ gameId: Number(gameId), body: 'The Host ended this game.', userId: 'System' }).then(() => {
+        if (gameInfo && gameInfo.status != 'win') {
+          updateStatus({ gameId: Number(gameId), status: 'lose' });
+          navigate(`/result/${gameId}`);
+        } else {
+          navigate(`/result/${gameId}`);
+        }
+      });
+    }
+  }, [gameInfo, isEnd]);
+
   return (
     <div className="bg-custom-gradient container flex min-w-full min-h-full">
+      {gameInfo && isToggle && (
+        <EndGame win_or_lose_string={gameInfo.status} setIsToggle={setIsToggle} setIsEnd={setIsEnd} />
+      )}
       <div className="flex-1 flex flex-col justify-between p-[50px]">
         <div className="generated-image flex-[3] overflow-hidden rounded-lg border-0">
           <img src={gameImage} alt="image" className="w-full h-full object-contain max-h-[650px] rounded-lg" />
         </div>
         <div className="prompt w-full h-[200px] mt-4 bg-black text-white border-0 rounded-[10px] flex items-center justify-center">
-          {gameInfo && !isTextLoading && <p className="max-w-[80%]">{gameInfo.currentDescription}</p>}
-          {(!gameInfo || isTextLoading) && <p className="max-w-[80%]">Loading...</p>}
+          {gameInfo && gameInfo.status != 'prompt' && <p className="max-w-[80%]">{gameInfo.currentDescription}</p>}
+          {(!gameInfo || gameInfo.status == 'prompt') && <p className="max-w-[80%]">Loading...</p>}
         </div>
       </div>
       <div className="chatbox p-[50px] bg-hackathon-chatbox-background flex flex-col flex-1 text-white max-h-[100vh]">
@@ -230,6 +247,17 @@ export const GamePlay = () => {
                 whileTap={{ scale: 0.95 }}
                 className="p-[10px] border-0 rounded-[10px] bg-hackathon-purple">
                 {isStart ? 'End Game' : 'Start Game'}
+              </motion.button>
+            )}
+            {!isHost && gameInfo && (gameInfo.status == 'win' || gameInfo.status == 'lose') && (
+              <motion.button
+                onClick={() => {
+                  navigate(`/result/${gameId}`);
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-[10px] border-0 rounded-[10px] bg-hackathon-purple">
+                Exit Game
               </motion.button>
             )}
             <input
