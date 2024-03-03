@@ -16,6 +16,7 @@ import type {
 } from "convex/server";
 import type * as action from "../action.js";
 import type * as game from "../game.js";
+import type * as https from "../https.js";
 import type * as message from "../message.js";
 import type * as user from "../user.js";
 
@@ -30,6 +31,7 @@ import type * as user from "../user.js";
 declare const fullApi: ApiFromModules<{
   action: typeof action;
   game: typeof game;
+  https: typeof https;
   message: typeof message;
   user: typeof user;
 }>;
