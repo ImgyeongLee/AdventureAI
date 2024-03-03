@@ -73,3 +73,19 @@ export const setUserGuest = internalMutation({
     });
   },
 });
+
+export const setUserHost = internalMutation({
+  args: {
+    _id: v.id('users'),
+    gameId: v.number(),
+    name: v.string(),
+    isHost: v.boolean(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args._id, {
+      gameId: args.gameId,
+      name: args.name,
+      isHost: args.isHost,
+    });
+  },
+});

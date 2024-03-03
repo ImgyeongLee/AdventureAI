@@ -6,13 +6,16 @@ import { useAction } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import React from 'react';
 import Loading from './Loading';
+import { useAuth } from '@clerk/clerk-react';
 
 const GameInfo = () => {
   const navigate = useNavigate();
   const goToPage = () => navigate('/host-guest');
   const [description, setDescription] = useState('');
   const createGame = useAction(api.game.createGame);
+  const userAction = useAction(api.user.setHost);
   const [load, setLoad] = useState<boolean>(false);
+  const user = useAuth();
 
   const handleChange = (event: { target: { value: SetStateAction<string> } }) => {
     setDescription(event.target.value);
@@ -21,12 +24,16 @@ const GameInfo = () => {
   const handleClick = async () => {
     if (description.length == 0) return;
 
-    setLoad(true);
-    createGame({ description }).then((id) => {
-      setLoad(false);
-      console.log(`Game created with id: ${id}`);
-      navigate(`/gameplay/${id}`); // TODO: Redirect to the host page for this page
-    });
+    if (user && user.userId) {
+      setLoad(true);
+      createGame({ description }).then((id) => {
+        userAction({ userId: user.userId, gameId: Number(id) }).then(() => {
+          setLoad(false);
+          console.log(`Game created with id: ${id}`);
+          navigate(`/gameplay/${id}`); // TODO: Redirect to the host page for this page
+        });
+      });
+    }
   };
 
   return (
