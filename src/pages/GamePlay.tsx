@@ -185,6 +185,12 @@ export const GamePlay = () => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key == 'Enter') {
+      handleSendMessage(e);
+    }
+  };
+
   useEffect(() => {
     if (!messages) {
       setIsLoading(true);
@@ -265,10 +271,12 @@ export const GamePlay = () => {
               className="flex-1 p-2 rounded-md text-black"
               placeholder="Type a message..."
               value={newMessage}
+              onKeyDown={handleKeyDown}
               onChange={(e) => setNewMessage(e.target.value)}
             />
             <motion.button
               type="submit"
+              onKeyPress={handleKeyDown}
               className="bg-hackathon-dark-blue-500 hover:bg-hackathon-gradient text-white font-bold py-2 px-4 rounded-md"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}>
