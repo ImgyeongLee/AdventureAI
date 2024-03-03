@@ -98,6 +98,13 @@ export const setGuest = action({
         skillAttackPoints: guestInfo.skillAttackPoints,
         skillSuccessRate: guestInfo.skillSuccessRate,
       });
+
+      await ctx.runMutation(internal.message.createMessage, {
+        userId: 'System',
+        sender: 'System',
+        gameId: currentUser.gameId,
+        body: `${args.name} just joined the game.`,
+      });
     }
   },
 });
