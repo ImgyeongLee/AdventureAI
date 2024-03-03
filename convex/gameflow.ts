@@ -196,10 +196,10 @@ export const monsterResponse = action({
       }
     }
 
-    let monsterHP = currentMonster.healthPoints;
+    let monsterHP = currentMonster.monsterHealthPoints;
     let userHP = currentUser.healthPoints;
 
-    // User phase
+    // User phase (User -> Monster)
     if (args.usingSkill) {
       const isUserSuccessSkill = Math.floor(Math.random() * 101) < currentUser.skillSuccessRate;
 
@@ -289,6 +289,5 @@ export const monsterResponse = action({
       _id: currentUser._id,
       currentHP: userHP,
     });
-
   },
 });

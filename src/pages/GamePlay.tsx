@@ -43,6 +43,7 @@ export const GamePlay = () => {
   const user = useAuth();
   const [isStart, setIsStart] = useState<boolean>(false);
   const [isHost, setIsHost] = useState<boolean>(false);
+  const [isDead, setIsDead] = useState<boolean>(false);
   const [newMessage, setNewMessage] = useState('');
   const messages = useQuery(api.message.getMessages, { gameId: Number(gameId) });
   const gameInfo = useQuery(api.game.getGameInfo, { gameId: Number(gameId) });
@@ -74,21 +75,23 @@ export const GamePlay = () => {
           <div className="flex items-center justify-center space-x-4 w-full">
             {/* Attack Button */}
             <motion.button
-              className="px-5 py-3 bg-hackathon-purple text-white border-0 rounded-[10px] cursor-pointer"
+              className="px-5 py-3 bg-hackathon-purple text-white border-0 rounded-[10px] cursor-pointer disabled:bg-slate-700 disabled:text-black"
               style={{ maxWidth: '150px' }} // Set a max width for smaller buttons
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={handleAttack}>
+              onClick={handleAttack}
+              disabled={isDead}>
               Attack
             </motion.button>
 
             {/* Ultimate Button */}
             <motion.button
-              className="px-5 py-3 bg-hackathon-purple text-white border-0 rounded-[10px] cursor-pointer"
+              className="px-5 py-3 bg-hackathon-purple text-white border-0 rounded-[10px] cursor-pointer disabled:bg-slate-700 disabled:text-black"
               style={{ maxWidth: '150px' }} // Set a max width for smaller buttons
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={handleSkill}>
+              onClick={handleSkill}
+              disabled={isDead}>
               Ultimate
             </motion.button>
 
@@ -134,6 +137,9 @@ export const GamePlay = () => {
     if (user && user.userId) {
       userInfo({ userId: user.userId }).then((currentUser) => {
         setHp(currentUser.healthPoints);
+        if (!currentUser.isHost && currentUser.healthPoints <= 0) {
+          setIsDead(true);
+        }
       });
     }
   };
