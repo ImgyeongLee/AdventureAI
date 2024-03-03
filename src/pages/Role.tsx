@@ -1,14 +1,18 @@
 import WhiteWave from '../components/Wave/WhiteWave';
 import { useNavigate } from 'react-router-dom';
 import { SetStateAction, useState } from 'react';
+import { useAction } from 'convex/react';
+import { api } from '../../convex/_generated/api';
+import { useAuth } from '@clerk/clerk-react';
 
 const Role = () => {
   const navigate = useNavigate();
-  const handleClick = () => navigate('/host-guest');
-
+  const user = useAuth();
+  const setGuest = useAction(api.action.setGuest);
   const [name, setName] = useState<string>('');
   const [hp, setHP] = useState<number>(0);
   const [skill, setSkill] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleName = (event: { target: { value: SetStateAction<string> } }) => {
     setName(event.target.value);
@@ -20,6 +24,18 @@ const Role = () => {
 
   const handleSkill = (event: { target: { value: SetStateAction<string> } }) => {
     setSkill(event.target.value);
+  };
+
+  const handleClick = () => {
+    if (!(name && hp && skill)) return;
+
+    setIsLoading(true);
+    if (user && user.userId) {
+      setGuest({ userId: user.userId, name: name, healthPoints: Number(hp), skill: skill }).then((user) => {
+        setIsLoading(false);
+        navigate(`/game-play/${user.gameId}`);
+      });
+    }
   };
 
   return (
@@ -62,7 +78,9 @@ const Role = () => {
             <div className="text-end">/ 2500</div>
           </div>
         </div>
-        <button className="w-full bg-hackathon-black py-4 rounded-br-xl rounded-bl-xl text-white italic font-semibold text-3xl relative bottom-0 hover:text-hackathon-black hover:bg-white transition ease-in-out">
+        <button
+          onClick={handleClick}
+          className="w-full bg-hackathon-black py-4 rounded-br-xl rounded-bl-xl text-white italic font-semibold text-3xl relative bottom-0 hover:text-hackathon-black hover:bg-white transition ease-in-out">
           Join the game!
         </button>
       </div>

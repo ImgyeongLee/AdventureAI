@@ -72,7 +72,7 @@ export const setGuest = action({
 
       const guestInfo = JSON.parse(completion.choices[0].message.content || '');
 
-      await ctx.runMutation(internal.user.setUserGuest, {
+      const updatedUser = await ctx.runMutation(internal.user.setUserGuest, {
         _id: currentUser._id,
         isHost: false,
         name: args.name,
@@ -84,6 +84,8 @@ export const setGuest = action({
         skillAttackPoints: guestInfo.skillAttackPoints,
         skillSuccessRate: guestInfo.skillSuccessRate,
       });
+
+      return updatedUser;
     }
   },
 });
