@@ -235,3 +235,20 @@ export const attackMonster = internalMutation({
     });
   },
 });
+
+export const areAllPlayersDead = query({
+    args: { gameId : v.number() },
+    handler: async (ctx, args) => {
+        let players = await ctx.db
+            .query('users')
+            .filter((q) => q.eq(q.field('gameId'), args.gameId))
+            .collect();
+        
+        for (let player of players) {
+            let playerHP = player.healthPoints ? player.healthPoints : 0;
+            if (playerHP > 0) return false;
+        }
+
+        return true;
+    }
+});
