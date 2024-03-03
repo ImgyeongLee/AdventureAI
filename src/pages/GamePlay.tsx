@@ -21,6 +21,12 @@ const YourMessage = ({ message }) => (
   </div>
 );
 
+const SystemMessage = ({ message }) => (
+  <div className="text-center p-4 bg-black">
+    <div>{message}</div>
+  </div>
+);
+
 const healthVariants = {
   hidden: { height: 0, opacity: 0 },
   visible: { height: "100%", opacity: 1, transition: { duration: 1 } },
@@ -36,6 +42,9 @@ export const GamePlay = () => {
   // const user = useAuth();
   console.log('== gameplay page received id: ', gameId);
   const [newMessage, setNewMessage] = useState('');
+  // const messages = useQuery(api.message.getMessages, { gameId: Number(gameId) });
+  // const gameInfo = useQuery(api.game.getGameInfo, { gameId: Number(gameId) });
+  // const createMessage = useAction(api.action.sentMessage);
   const [messages, setMessages] = useState([
     { sender: 'Player1', body: 'Hello there!' },
     { sender: 'You', body: 'Hi! How are you?' },
@@ -52,6 +61,16 @@ export const GamePlay = () => {
   const [hp, setHp] = useState(100) // use setHp value obtained from backend to update the hp
   // const gameImage = useQuery(api.https.getImageURL, { gameId: Number(gameId) }) || image;
   const gameImage = placeholderImage
+
+  const renderMessage = (senderType: string, index: number, body: string, sender: string) => {
+    if (senderType == 'System') {
+      return <SystemMessage key={index} message={body} />;
+    } else if (senderType == user.userId) {
+      return <YourMessage key={index} message={body} />;
+    } else {
+      return <PlayerMessage key={index} player={sender} message={body} />;
+    }
+  };
 
   const handleSendMessage = (e: Event) => {
     e.preventDefault();
@@ -87,12 +106,14 @@ export const GamePlay = () => {
           <img src={gameImage} alt="image" className="w-full h-full object-contain max-h-[650px] rounded-lg" />
         </div>
         <div className="prompt w-full h-[200px] mt-4 bg-black text-white border-0 rounded-[10px] flex items-center justify-center">
-          <p className="max-w-[80%]">{text}</p>
+          {gameInfo && <p className="max-w-[80%]">{gameInfo.currentDescription}</p>}
+          {!gameInfo && <p className="max-w-[80%]">Loading...</p>}
         </div>
       </div>
       <div className="chatbox p-[50px] bg-hackathon-chatbox-background flex flex-col flex-1 text-white max-h-[100vh]">
         <div className="messages overflow-auto flex-grow">
           <div className="text-center pb-8">Your game invitation code is: {gameId}</div>
+          {/*{!isLoading && messages?.map((msg, index) => renderMessage(msg.userId, index, msg.body, msg.sender))}*/}
           {!isLoading &&
             messages?.map((msg, index) =>
               // msg.sender === user.userId ? (
@@ -102,11 +123,11 @@ export const GamePlay = () => {
                 <PlayerMessage key={index} player={msg.sender} message={msg.body} />
               )
             )}
-          {isLoading && (
-            <div className="flex text-center justify-center">
-              <PuffLoader color="#ffffff" />
-            </div>
-          )}
+          {/*{isLoading && (*/}
+          {/*  <div className="flex text-center justify-center">*/}
+          {/*    <PuffLoader color="#ffffff" />*/}
+          {/*  </div>*/}
+          {/*)}*/}
           <div ref={messagesEndRef} /> {/* Invisible element at the end of messages */}
         </div>
         <div className="flex items-start space-x-4 w-full">

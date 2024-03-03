@@ -82,10 +82,10 @@ const Role = () => {
                 />
               </div>
               <div className="col-span-2 pb-12">
-                <div className="font-bold pb-2 text-3xl">Skills</div>
+                <div className="font-bold pb-2 text-3xl">Description</div>
                 <textarea
                   onChange={handleSkill}
-                  placeholder="Type your skill information"
+                  placeholder="Describe yourself to create your own skill (e.g. I am a little bad boy)"
                   className="w-full h-full rounded-lg p-3 resize-none"
                 />
                 <div className="text-end">/ 2500</div>

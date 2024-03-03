@@ -1,42 +1,39 @@
-import { httpRouter } from 'convex/server';
-import { query, httpAction } from './_generated/server';
+import { query } from './_generated/server';
 import { v } from 'convex/values';
 
-const http = httpRouter();
-
 export const getImageId = query({
-    args : { gameId : v.number() },
-    handler : async (ctx, args) => {
-        let game = await ctx.db
-            .query("games")
-            .filter((q) => q.eq(q.field("id"), args.gameId))
-            .first();
-        
-        let imageStorageId = game?.imageId;
+  args: { gameId: v.number() },
+  handler: async (ctx, args) => {
+    const game = await ctx.db
+      .query('games')
+      .filter((q) => q.eq(q.field('id'), args.gameId))
+      .first();
 
-        if (!imageStorageId) {
-            // TODO: default image
-        }
+    const imageStorageId = game?.imageId;
 
-        return imageStorageId;
+    if (!imageStorageId) {
+      // TODO: default image
     }
+
+    return imageStorageId;
+  },
 });
 
 export const getImageURL = query({
-    args : { gameId : v.number() },
-    handler : async (ctx, args) => {
-        let game = await ctx.db
-            .query("games")
-            .filter((q) => q.eq(q.field("id"), args.gameId))
-            .first();
+  args: { gameId: v.number() },
+  handler: async (ctx, args) => {
+    const game = await ctx.db
+      .query('games')
+      .filter((q) => q.eq(q.field('id'), args.gameId))
+      .first();
 
-        let imageStorageId = game?.imageId;
-        let imageUrl = imageStorageId ? await ctx.storage.getUrl(imageStorageId) : "default";
+    const imageStorageId = game?.imageId;
+    const imageUrl = imageStorageId ? await ctx.storage.getUrl(imageStorageId) : 'default';
 
-        // TODO: use and actual default image url
-        
-        return imageUrl;
-    }
+    // TODO: use and actual default image url
+
+    return imageUrl;
+  },
 });
 
 /*
