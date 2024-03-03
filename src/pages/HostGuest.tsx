@@ -1,15 +1,21 @@
 import BlueWave from '../components/Wave/BlueWave';
 import RoleCard from '../components/RoleCard';
-import { useState, useEffect, SetStateAction } from 'react';
+import { useState, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
 import host from '../assets/host.webp';
 import player from '../assets/player.png';
 import { cn } from '../lib/tailwind-utils';
+import { useAction } from 'convex/react';
+import { api } from '../../convex/_generated/api';
+import { useAuth } from '@clerk/clerk-react';
 
 const HostGuest = () => {
   const [code, setCode] = useState<string>('');
+  const user = useAuth();
   const [inputError, setInputError] = useState<boolean>(false);
   const navigate = useNavigate();
+  const userAction = useAction(api.action.setUserGameId);
+
   const handleChange = (event: { target: { value: SetStateAction<string> } }) => {
     setInputError(false);
     setCode(event.target.value);
@@ -20,8 +26,9 @@ const HostGuest = () => {
   };
 
   const selectGuest = () => {
-    if (code.length != 0) {
+    if (code.length != 0 && user.userId) {
       setCode('');
+      userAction({ userId: user.userId, gameId: Number(code) });
       navigate('/role');
     }
     setInputError(true);
