@@ -169,3 +169,24 @@ export const createGame = action({
     return id;
   },
 });
+
+export const monsterResponse = action({
+    args: { gameId : v.number(), userId: v.string(), usingSkill: v.boolean() },
+    handler: async (ctx, args) => {
+        let log = "";
+
+        // Apply the user's attack points to the monster's health points // TODO
+        
+        // Check if the monster is dead // TODO
+
+        // Chose a response randomly (30% chance of using skill) // TODO
+
+        // Apply the monster's attack points to the user's health points // TODO
+
+        // Generate response message from the log using GPT //TODO
+
+        let msg = "The monster did not respond."
+
+        return { message: msg, monsterDied: false, userDied: false }
+    }
+});
