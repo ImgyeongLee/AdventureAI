@@ -137,7 +137,7 @@ export const setHost = action({
     });
 
     if (currentUser) {
-      await ctx.runMutation(internal.user.setuserHost, {
+      await ctx.runMutation(internal.user.setUserHost, {
         _id: currentUser._id,
         isHost: true,
         name: 'Host',

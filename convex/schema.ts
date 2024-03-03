@@ -19,6 +19,7 @@ export default defineSchema({
     id: v.number(),
     status: v.string(),
     imageId: v.optional(v.id('_storage')),
+    currentDescription: v.string(),
     settingDescription: v.string(),
     monsterDescription: v.string(),
     monsterHealthPoints: v.number(),

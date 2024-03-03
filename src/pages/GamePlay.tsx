@@ -27,6 +27,7 @@ export const GamePlay = () => {
   console.log('== gameplay page received id: ', gameId);
   const [newMessage, setNewMessage] = useState('');
   const messages = useQuery(api.message.getMessages, { gameId: Number(gameId) });
+  const gameInfo = useQuery(api.game.getGameInfo, { gameId: Number(gameId) });
   const createMessage = useAction(api.action.sentMessage);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const messagesEndRef = useRef(null); // Reference to the end of the messages
@@ -52,8 +53,6 @@ export const GamePlay = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const text = 'There is a mountain called Lorem Ipsum';
-
   return (
     <div className="bg-custom-gradient container flex min-w-full min-h-full">
       <div className="flex-1 flex flex-col justify-between p-[50px]">
@@ -61,7 +60,8 @@ export const GamePlay = () => {
           <img src={gameImage} alt="image" className="w-full h-full object-contain max-h-[650px] rounded-lg" />
         </div>
         <div className="prompt w-full h-[200px] mt-4 bg-black text-white border-0 rounded-[10px] flex items-center justify-center">
-          <p className="max-w-[80%]">{text}</p>
+          {gameInfo && <p className="max-w-[80%]">{gameInfo.currentDescription}</p>}
+          {!gameInfo && <p className="max-w-[80%]">Loading...</p>}
         </div>
       </div>
       <div className="chatbox p-[50px] bg-hackathon-chatbox-background flex flex-col flex-1 text-white max-h-[100vh]">

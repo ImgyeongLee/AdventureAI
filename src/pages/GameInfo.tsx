@@ -13,7 +13,7 @@ const GameInfo = () => {
   const goToPage = () => navigate('/host-guest');
   const [description, setDescription] = useState('');
   const createGame = useAction(api.game.createGame);
-  const userAction = useAction(api.user.setHost);
+  const userAction = useAction(api.action.setHost);
   const [load, setLoad] = useState<boolean>(false);
   const user = useAuth();
 
