@@ -5,7 +5,7 @@ export default defineSchema({
   users: defineTable({
     id: v.string(),
     name: v.optional(v.string()),
-    gameId: v.optional(v.string()),
+    gameId: v.optional(v.number()),
     role: v.optional(v.string()),
     isHost: v.optional(v.boolean()),
     healthPoints: v.optional(v.number()),
@@ -18,7 +18,7 @@ export default defineSchema({
   games: defineTable({
     id: v.number(),
     status: v.string(),
-    imageId: v.optional(v.string()),
+    imageId: v.optional(v.id("_storage")),
     settingDescription: v.string(),
     monsterDescription: v.string(),
     monsterHealthPoints: v.number(),

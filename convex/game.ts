@@ -20,7 +20,7 @@ export const insertGame = internalMutation(async ({db},
         monsterSkillSuccessRate
     } : {
         id: number,
-        imageId : string,
+        imageId : any,
         settingDescription: string,
         monsterDescription: string,
         monsterHealthPoints: number,
