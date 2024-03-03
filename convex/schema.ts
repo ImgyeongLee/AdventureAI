@@ -18,7 +18,7 @@ export default defineSchema({
   games: defineTable({
     id: v.number(),
     status: v.string(),
-    imageId: v.optional(v.id('_storage')),
+    imageUrl: v.optional(v.string()),
     currentDescription: v.string(),
     settingDescription: v.string(),
     monsterDescription: v.string(),
