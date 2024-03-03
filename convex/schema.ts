@@ -5,7 +5,7 @@ export default defineSchema({
   users: defineTable({
     id: v.string(),
     name: v.optional(v.string()),
-    gameId: v.optional(v.string()),
+    gameId: v.optional(v.number()),
     role: v.optional(v.string()),
     isHost: v.optional(v.boolean()),
     healthPoints: v.optional(v.number()),
