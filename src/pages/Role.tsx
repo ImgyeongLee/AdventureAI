@@ -57,7 +57,7 @@ const Role = () => {
                   className="ml-[20pt] w-[54px] cursor-pointer transition duration-200 ease-in-out transform hover:scale-110 hover-border-bottom"
                   src="https://img.icons8.com/sf-black-filled/64/left.png"
                   alt="arrow-pointing-left"
-                  onClick={handleClick}
+                  onClick={() => navigate('/host-guest')}
                 />
                 <div className="ml-[-20pt] text-6xl font-semibold italic pb-1 flex-1 text-center">Role Information</div>
                 <div className="w-auto invisible"> {/* Invisible spacer with the same width as the back button */}</div>
