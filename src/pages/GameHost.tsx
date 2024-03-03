@@ -91,7 +91,7 @@ export const GameHost = () => {
             </motion.button>
           </form>
           <div className="flex flex-col items-center">
-            <div className="flex flex-row justify-center space-x-2">
+            <div className="flex flex-row justify-center space-x-2 mt-5">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
