@@ -105,25 +105,34 @@ export const setGuest = action({
 export const sentMessage = action({
   args: { userId: v.string(), gameId: v.number(), body: v.string() },
   handler: async (ctx, args) => {
-    const currentUser = await ctx.runQuery(internal.user.getUser, {
-      userId: args.userId,
-    });
+    if (args.userId == 'System') {
+      await ctx.runMutation(internal.message.createMessage, {
+        userId: 'System',
+        gameId: args.gameId,
+        sender: 'System',
+        body: args.body,
+      });
+    } else {
+      const currentUser = await ctx.runQuery(internal.user.getUser, {
+        userId: args.userId,
+      });
 
-    if (currentUser) {
-      if (currentUser.name) {
-        await ctx.runMutation(internal.message.createMessage, {
-          userId: args.userId,
-          gameId: args.gameId,
-          sender: currentUser.name,
-          body: args.body,
-        });
-      } else {
-        await ctx.runMutation(internal.message.createMessage, {
-          userId: args.userId,
-          gameId: args.gameId,
-          sender: args.userId,
-          body: args.body,
-        });
+      if (currentUser) {
+        if (currentUser.name) {
+          await ctx.runMutation(internal.message.createMessage, {
+            userId: args.userId,
+            gameId: args.gameId,
+            sender: currentUser.name,
+            body: args.body,
+          });
+        } else {
+          await ctx.runMutation(internal.message.createMessage, {
+            userId: args.userId,
+            gameId: args.gameId,
+            sender: args.userId,
+            body: args.body,
+          });
+        }
       }
     }
   },

@@ -21,6 +21,12 @@ const YourMessage = ({ message }) => (
   </div>
 );
 
+const SystemMessage = ({ message }) => (
+  <div className="text-center p-4 bg-black">
+    <div>{message}</div>
+  </div>
+);
+
 export const GamePlay = () => {
   const { gameId } = useParams();
   const user = useAuth();
@@ -33,6 +39,16 @@ export const GamePlay = () => {
   const messagesEndRef = useRef(null); // Reference to the end of the messages
 
   const gameImage = useQuery(api.https.getImageURL, { gameId: Number(gameId) }) || image;
+
+  const renderMessage = (senderType: string, index: number, body: string, sender: string) => {
+    if (senderType == 'System') {
+      return <SystemMessage key={index} message={body} />;
+    } else if (senderType == user.userId) {
+      return <YourMessage key={index} message={body} />;
+    } else {
+      return <PlayerMessage key={index} player={sender} message={body} />;
+    }
+  };
 
   const handleSendMessage = (e: Event) => {
     e.preventDefault();
@@ -67,14 +83,7 @@ export const GamePlay = () => {
       <div className="chatbox p-[50px] bg-hackathon-chatbox-background flex flex-col flex-1 text-white max-h-[100vh]">
         <div className="messages overflow-auto flex-grow">
           <div className="text-center pb-8">Your game invitation code is: {gameId}</div>
-          {!isLoading &&
-            messages?.map((msg, index) =>
-              msg.userId === user.userId ? (
-                <YourMessage key={index} message={msg.body} />
-              ) : (
-                <PlayerMessage key={index} player={msg.sender} message={msg.body} />
-              )
-            )}
+          {!isLoading && messages?.map((msg, index) => renderMessage(msg.userId, index, msg.body, msg.sender))}
           {isLoading && (
             <div className="flex text-center justify-center">
               <PuffLoader color="#ffffff" />
