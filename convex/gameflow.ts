@@ -16,6 +16,7 @@ export const generateFirstScene = action({
       console.log('Current Game is == ', currentGame);
       const setting = currentGame.currentDescription;
       let prompt = `You are a text-based RPG. 
+      (IMPORTANT) Don't violate the safety policy 
       You are in a setting. 
       There is a monster.
       In JSON format, generate text about a cool starting battle scene (maximum is 500 characters):
@@ -100,7 +101,8 @@ export const generateDeadScene = internalAction({
       let prompt = `You are a text-based RPG. 
         You are in a setting. 
         This scene is the final scene of the game but that is a bad ending.
-        In JSON format, generate text describing the scene after the monster killed all players in a battle (maximum is 500 characters):
+        In JSON format, generate text describing the scene.
+        The maximum number of characters is 500 and (IMPORTANT) Don't violate the safety policy :
         
         string currentDescription
   
@@ -181,7 +183,8 @@ export const generateFinalScene = internalAction({
       let prompt = `You are a text-based RPG. 
       You are in a setting. 
       There is a dead monster.
-      In JSON format, generate text describing the scene after the monster was killed in a battle (maximum is 500 characters):
+      In JSON format, generate text describing the scene after the monster was killed in a battle.
+      The maximum number of characters is 500 and (IMPORTANT) Don't violate the safety policy :
       
       string currentDescription
 
@@ -381,6 +384,7 @@ export const monsterResponse = action({
                 _id: currentMonster._id,
                 status: 'win',
               });
+              return;
             });
 
           return;

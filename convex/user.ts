@@ -80,12 +80,14 @@ export const setUserHost = internalMutation({
     gameId: v.number(),
     name: v.string(),
     isHost: v.boolean(),
+    healthPoints: v.number(),
   },
   handler: async (ctx, args) => {
     await ctx.db.patch(args._id, {
       gameId: args.gameId,
       name: args.name,
       isHost: args.isHost,
+      healthPoints: args.healthPoints,
     });
   },
 });

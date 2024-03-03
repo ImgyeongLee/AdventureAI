@@ -158,6 +158,7 @@ export const setHost = action({
         isHost: true,
         name: 'Host',
         gameId: args.gameId,
+        healthPoints: 0,
       });
     }
   },
