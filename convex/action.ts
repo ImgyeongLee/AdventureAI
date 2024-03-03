@@ -43,24 +43,6 @@ export const setUserGameId = action({
   },
 });
 
-export const setHost = action({
-  args: { userId: v.string(), gameId: v.string() },
-  handler: async (ctx, args) => {
-    const currentUser = await ctx.runQuery(internal.user.getUser, {
-      userId: args.userId,
-    });
-
-    if (currentUser) {
-      await ctx.runMutation(internal.user.setuserHost, {
-        _id: currentUser._id,
-        isHost: true,
-        name: 'Host',
-        gameId: args.gameId,
-      });
-    }
-  },
-});
-
 export const setGuest = action({
   args: { userId: v.string(), name: v.string(), skill: v.string(), healthPoints: v.number() },
   handler: async (ctx, args) => {
@@ -143,6 +125,24 @@ export const sentMessage = action({
           body: args.body,
         });
       }
+    }
+  },
+});
+
+export const setHost = action({
+  args: { userId: v.string(), gameId: v.number() },
+  handler: async (ctx, args) => {
+    const currentUser = await ctx.runQuery(internal.user.getUser, {
+      userId: args.userId,
+    });
+
+    if (currentUser) {
+      await ctx.runMutation(internal.user.setuserHost, {
+        _id: currentUser._id,
+        isHost: true,
+        name: 'Host',
+        gameId: args.gameId,
+      });
     }
   },
 });
