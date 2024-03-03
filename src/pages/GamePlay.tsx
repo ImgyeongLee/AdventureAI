@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useAction, useMutation, useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { useAuth } from '@clerk/clerk-react';
+import { motion } from "framer-motion";
 
 const PlayerMessage = ({ player, message }) => (
   <div className="flex flex-col items-start justify-start mb-7">
@@ -55,7 +56,7 @@ export const GamePlay = () => {
         </div>
       </div>
       <div className="chatbox p-[50px] bg-hackathon-chatbox-background flex flex-col flex-1 text-white max-h-[100vh]">
-        <div className="messages overflow-auto flex-grow">
+        <div className="scrollbar-style overflow-auto flex-grow">
           {messages?.map((msg, index) =>
             msg.sender === user.userId ? (
               <YourMessage key={index} message={msg.body} />
@@ -74,11 +75,14 @@ export const GamePlay = () => {
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
             />
-            <button
+            <motion.button
               type="submit"
-              className="bg-hackathon-dark-blue-500 hover:bg-hackathon-gradient text-white font-bold py-2 px-4 rounded-md">
+              className="bg-hackathon-dark-blue-500 hover:bg-hackathon-gradient text-white font-bold py-2 px-4 rounded-md"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               Send
-            </button>
+            </motion.button>
           </form>
         </div>
       </div>

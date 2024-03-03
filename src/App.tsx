@@ -5,7 +5,8 @@ import GameInfo from './pages/GameInfo';
 import Game from './pages/Game';
 import Role from './pages/Role';
 import Lobby from './pages/Lobby';
-import {GamePlay} from "./pages/GamePlay";
+import { GamePlay } from "./pages/GamePlay";
+import { GameHost } from "./pages/GameHost";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/game:gameId" element={<Game />} />
         <Route path="/role" element={<Role />} />
         <Route path="/gameplay/:gameId" element={<GamePlay />} />
+        <Route path="/gamehost/:gameId" element={<GameHost />} />
     </Routes>
   );
 }

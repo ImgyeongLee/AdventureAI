@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
+import scrollbar from "tailwind-scrollbar";
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires, no-undef
 const defaultTheme = require('tailwindcss/defaultTheme');
 
@@ -18,7 +20,8 @@ export default {
         'hackathon-dark-gradient': '#362550',
         'hackathon-blue': '#4700A2',
         'hackathon-dev-card-white': '#D9D9D9',
-        'hackathon-chatbox-background': "#121212"
+        'hackathon-chatbox-background': "#121212",
+        'hackathon-host-chatbox-background': "#1F1F1F"
       },
       fontFamily: {
         body: ['Roboto', 'sans-serif', ...defaultTheme.fontFamily.sans],

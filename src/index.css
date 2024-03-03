@@ -26,3 +26,21 @@ html {
   border-bottom: 4px solid;
   border-radius: 5px;
 }
+
+/* Custom scrollbar styles */
+.scrollbar-style::-webkit-scrollbar {
+  width: 8px; /* Adjust the width of the scrollbar */
+}
+
+.scrollbar-style::-webkit-scrollbar-track {
+  background: transparent; /* Color of the scrollbar track */
+}
+
+.scrollbar-style::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 6px; /* Rounded corners on the scrollbar thumb */
+}
+
+.scrollbar-style::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the scrollbar thumb on hover */
+}
