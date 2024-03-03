@@ -1,4 +1,4 @@
-import { action } from './_generated/server';
+import { action, internalAction } from './_generated/server';
 import { v } from 'convex/values';
 import { internal } from './_generated/api';
 import { OpenAI } from 'openai';
@@ -86,8 +86,8 @@ export const generateFirstScene = action({
   },
 });
 
-export const generateFinalScene = action({
-  args: { gameId: v.number() },
+export const generateFinalScene = internalAction({
+  args: { gameId: v.number(), monsterDeathDescription: v.string() },
   handler: async (ctx, args) => {
     const currentGame = await ctx.runQuery(internal.game.getGame, {
       gameId: args.gameId,
@@ -105,6 +105,7 @@ export const generateFinalScene = action({
       Here is a description of the setting: 
       `;
       prompt += setting;
+      prompt += `\nThe monster died: ${args.monsterDeathDescription}`;
 
       // Send the prompt to GPT
       const completion = await openai.chat.completions.create({
@@ -215,10 +216,31 @@ export const monsterResponse = action({
         monsterHP -= currentUser.skillAttackPoints;
 
         if (monsterHP <= 0) {
+
+          // Create a message that the player killed the monster
+          await ctx.runMutation(internal.message.createMessage, {
+            userId: 'System',
+            gameId: args.gameId,
+            sender: 'System',
+            body: `${currentUser.name} killed the monster!`,
+          });
+
+          let monsterDeathDesc = `The monster died.\nMonster: ${currentMonster.monsterDescription}\n`;
+          if (args.usingSkill) {
+            monsterDeathDesc += `The monster died from ${currentUser.name}'s special skill.\n`;
+            monsterDeathDesc += `(${currentUser.skillName}: ${currentUser.skillDescription})`;
+          }
+
+          // Final scene generation
+          await ctx.runMutation(internal.game.generateFinalScene, {
+            gameId: args.gameId,
+            monsterDeathDescription: monsterDeathDesc,
+          });
+
           // Change the game status done
           await ctx.runMutation(internal.game.updateGameStatus, {
             _id: currentMonster._id,
-            status: 'done',
+            status: 'win',
           });
           return;
         } else {
