@@ -22,7 +22,7 @@ export const GameHost = () => {
   const { gameId } = useParams();
   console.log('gameId: ', gameId);
   const [newMessage, setNewMessage] = useState('');
-  const messagesEndRef = useRef(null); // Reference to the end of the messages
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [messages, setMessages] = useState([
     {
       user: 'Nadir',
@@ -90,7 +90,22 @@ export const GameHost = () => {
               Send
             </motion.button>
           </form>
-          <div className="flex flex-col items-center"></div>
+          <div className="flex flex-col items-center">
+            <div className="flex flex-row justify-center space-x-2">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-[10px] border-0 rounded-[10px] bg-hackathon-purple">
+                Start Game
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-[10px] border-0 rounded-[10px] bg-hackathon-purple">
+                End Game
+              </motion.button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

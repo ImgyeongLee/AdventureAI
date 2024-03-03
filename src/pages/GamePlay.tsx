@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, FormEventHandler, MouseEventHandler } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAction, useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
@@ -53,7 +53,7 @@ export const GamePlay = () => {
   const attackAction = useAction(api.gameflow.monsterResponse);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isTextLoading, setIsTextLoading] = useState<boolean>(false);
-  const messagesEndRef = useRef(null); // Reference to the end of the messages
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [hp, setHp] = useState(100); // use setHp value obtained from backend to update the hp
   const gameImage = useQuery(api.https.getImageURL, { gameId: Number(gameId) }) || placeholderImage;
 
@@ -138,7 +138,7 @@ export const GamePlay = () => {
     }
   };
 
-  const handleClick = (e: Event) => {
+  const handleClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     setIsStart(!isStart);
 
@@ -156,7 +156,7 @@ export const GamePlay = () => {
     }
   };
 
-  const handleSendMessage = (e: Event) => {
+  const handleSendMessage: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (!newMessage.trim()) return; // Ignore empty messages
 

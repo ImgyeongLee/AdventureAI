@@ -22,8 +22,8 @@ const Role = () => {
     setName(event.target.value);
   };
 
-  const handleHP = (event: { target: { value: SetStateAction<number> } }) => {
-    setHP(event.target.value);
+  const handleHP = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setHP(Number(event.target.value));
   };
 
   const handleSkill = (event: { target: { value: SetStateAction<string> } }) => {
