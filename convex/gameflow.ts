@@ -135,6 +135,10 @@ export const monsterResponse = action({
 
         if (monsterHP <= 0) {
           // Change the game status done
+          await ctx.runMutation(internal.game.updateGameStatus, {
+            _id: currentMonster._id,
+            status: 'done',
+          });
           return;
         } else {
           await ctx.runMutation(internal.game.attackMonster, {
@@ -205,14 +209,5 @@ export const monsterResponse = action({
       currentHP: userHP,
     });
 
-    // Chose a response randomly (30% chance of using skill) // TODO
-
-    // Apply the monster's attack points to the user's health points // TODO
-
-    // Generate response message from the log using GPT //TODO
-
-    //let msg = 'The monster did not respond.';
-
-    //return { message: msg, monsterDied: false, userDied: false };
   },
 });
