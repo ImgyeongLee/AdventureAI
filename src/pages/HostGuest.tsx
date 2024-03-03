@@ -1,17 +1,14 @@
 import PinkBox from '../components/PinkBox';
 import BlueWave from '../components/Wave/BlueWave';
 import RoleCard from '../components/RoleCard';
-import { useState, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import host from '../assets/host.webp';
 import player from '../assets/player.png';
 
 const HostGuest = () => {
   const [code, setCode] = useState<string>('');
-
   const navigate = useNavigate();
-
   const selectHost = () => {
     navigate('/game-info');
   };
