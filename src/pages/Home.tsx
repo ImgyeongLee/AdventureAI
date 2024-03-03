@@ -44,7 +44,7 @@ const Home = () => {
     }
   };
 
-  const text = 'Start your new adventure!';
+  const text = "Start your new adventure!"
 
   const stardustVariantL = {
     hidden: { scale: 0, opacity: 0, rotate: 0 },
@@ -52,8 +52,8 @@ const Home = () => {
       scale: [1, 1.3, 1],
       opacity: [0, 1, 0.5, 1],
       rotate: [0, 10, -10, 0],
-      transition: { duration: 1.5, ease: 'easeInOut' },
-    },
+      transition: { duration: 1.5, ease: "easeInOut" }
+    }
   };
 
   const stardustVariantR = {
@@ -62,8 +62,8 @@ const Home = () => {
       scale: [1, 1.7, 1],
       opacity: [0, 1, 0.7, 1],
       rotate: [0, 20, -20, 0],
-      transition: { duration: 2, ease: 'easeInOut' },
-    },
+      transition: { duration: 2, ease: "easeInOut" }
+    }
   };
 
   const calculateDelay = (index) => 1.3 + index * 0.05; // Starts after 2 seconds, then each letter appears 0.05s after the previous one
@@ -112,7 +112,7 @@ const Home = () => {
 
           <div className="z-10 flex flex-col items-center">
             {buttonController()}
-            <div className={'mt-[20px] text-white font-bold text-[1rem] sm:text-[1rem] md:text-[1.5rem]'}>
+            <div className={'mt-[20px] text-white font-bold text-[1rem] sm:text-[1rem] md:text-[1.5rem] cursor-default'}>
               {text.split('').map((letter, index) => (
                 <motion.span
                   key={index}
@@ -135,13 +135,18 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="bg-gradient-to-b from-hackathon-dark-blue to-hackathon-gradient min-h-screen relative z-[1] grid grid-cols-2 items-start">
-        <div className="flex flex-col items-center text-center mt-[100px] md:mt-[50px] lg:mt-[100px] text-white">
-          <div className="catch text-left w-full sm:w-[90%] md:w-[80%] lg:w-[70%] max-w-[500px] mx-auto justify-center">
-            <p className="font-bold text-[3rem] sm:text-[4rem] md:text-[5rem] mb-[-20px]">Customize</p>
-            <p className="font-bold text-[3rem] sm:text-[4rem] md:text-[5rem] mb-[-20px]">Your Own</p>
-            <p className="font-bold text-[3rem] sm:text-[4rem] md:text-[5rem] mb-[-20px]">Game</p>
-            <p className="mt-[40px] text-white text-[1rem] sm:text-[1.25rem] md:text-[1.5rem] text-left">
+      <div className="bg-gradient-to-b from-hackathon-dark-blue to-hackathon-gradient min-h-screen relative z-[1] grid grid-cols-1 md:grid-cols-2 items-start gap-4 p-4 md:p-8">
+        <div className="flex flex-col items-center text-center">
+          <div className="catch flex flex-col justify-center items-center text-white w-full sm:w-[90%] md:w-[80%] lg:w-[70%] max-w-[500px] mx-auto h-full sm:h-auto cursor-default">
+            <div className="hidden sm:flex flex-col items-start text-left w-full">
+              <p className="font-bold text-[2rem] sm:text-[3rem] md:text-[4rom] lg:text-[5rem] mb-4">Customize</p>
+              <p className="font-bold text-[2rem] sm:text-[3rem] md:text-[4rom] lg:text-[5rem] mb-4">Your Own</p>
+              <p className="font-bold text-[2rem] sm:text-[3rem] md:text-[4rom] lg:text-[5rem] mb-4">Game</p>
+            </div>
+            <div className="flex sm:hidden justify-center items-center text-[2rem] font-bold mb-4">
+              <span>Customize Your Own Game</span>
+            </div>
+            <p className="mt-4 text-lg sm:text-xl md:text-2xl lg:text-3xl text-center sm:text-left">
               AI will become the Game Master for your imaginative game!
             </p>
           </div>
@@ -156,7 +161,7 @@ const Home = () => {
         />
       </div>
       <div className="bg-gradient-to-b from-hackathon-blue to-hackathon-gradient min-h-full w-full">
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center cursor-default">
           <div className="text-[3rem] sm:text-[4rem] md:text-[5rem] font-bold text-white text-center">Developers</div>
           <div className="flex flex-col sm:flex-row justify-between items-center px-4 w-[95%] sm:w-[80%] mt-[50px] sm:mt-[100px]">
             <div className="flex-1 mb-4 sm:mb-0">
