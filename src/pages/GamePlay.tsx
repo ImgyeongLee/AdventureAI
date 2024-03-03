@@ -39,28 +39,17 @@ const textVariants = {
 
 export const GamePlay = () => {
   const { gameId } = useParams();
-  // const user = useAuth();
+  const user = useAuth();
   console.log('== gameplay page received id: ', gameId);
   const [newMessage, setNewMessage] = useState('');
-  // const messages = useQuery(api.message.getMessages, { gameId: Number(gameId) });
-  // const gameInfo = useQuery(api.game.getGameInfo, { gameId: Number(gameId) });
-  // const createMessage = useAction(api.action.sentMessage);
-  const [messages, setMessages] = useState([
-    { sender: 'Player1', body: 'Hello there!' },
-    { sender: 'You', body: 'Hi! How are you?' },
-    { sender: 'Player2', body: 'This game is fun!' },
-  ]);
-  // const messages = useQuery(api.message.getMessages, { gameId: Number(gameId) });
-  // const createMessage = useAction(api.action.sentMessage);
-  const createMessage = (message) => {
-    console.log('Mock send message:', message);
-    setMessages([...messages, { sender: 'You', body: message.body }]);
-  };
+  const messages = useQuery(api.message.getMessages, { gameId: Number(gameId) });
+  const gameInfo = useQuery(api.game.getGameInfo, { gameId: Number(gameId) });
+  const createMessage = useAction(api.action.sentMessage);
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const messagesEndRef = useRef(null); // Reference to the end of the messages
   const [hp, setHp] = useState(100) // use setHp value obtained from backend to update the hp
-  // const gameImage = useQuery(api.https.getImageURL, { gameId: Number(gameId) }) || image;
-  const gameImage = placeholderImage
+  const gameImage = useQuery(api.https.getImageURL, { gameId: Number(gameId) }) || placeholderImage;
 
   const renderMessage = (senderType: string, index: number, body: string, sender: string) => {
     if (senderType == 'System') {
@@ -76,28 +65,20 @@ export const GamePlay = () => {
     e.preventDefault();
     if (!newMessage.trim()) return; // Ignore empty messages
 
-    // if (gameId && user.userId) {
-    //   createMessage({ gameId: Number(gameId), body: newMessage, userId: user.userId });
-    //   setNewMessage('');
-    // }
-    createMessage({ body: newMessage });
-    setNewMessage('');
+    if (gameId && user.userId) {
+      createMessage({ gameId: Number(gameId), body: newMessage, userId: user.userId });
+      setNewMessage('');
+    }
   };
 
-  // useEffect(() => {
-  //   if (!messages) {
-  //     setIsLoading(true);
-  //   } else {
-  //     setIsLoading(false);
-  //   }
-  //   messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  // }, [messages]);
-
   useEffect(() => {
+    if (!messages) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-  const text = 'There is a mountain called Lorem Ipsum';
 
   return (
     <div className="bg-custom-gradient container flex min-w-full min-h-full">
@@ -113,21 +94,20 @@ export const GamePlay = () => {
       <div className="chatbox p-[50px] bg-hackathon-chatbox-background flex flex-col flex-1 text-white max-h-[100vh]">
         <div className="messages overflow-auto flex-grow">
           <div className="text-center pb-8">Your game invitation code is: {gameId}</div>
-          {/*{!isLoading && messages?.map((msg, index) => renderMessage(msg.userId, index, msg.body, msg.sender))}*/}
+          {!isLoading && messages?.map((msg, index) => renderMessage(msg.userId, index, msg.body, msg.sender))}
           {!isLoading &&
             messages?.map((msg, index) =>
-              // msg.sender === user.userId ? (
-                msg.sender === "You" ? (
+              msg.sender === user.userId ? (
                 <YourMessage key={index} message={msg.body} />
               ) : (
                 <PlayerMessage key={index} player={msg.sender} message={msg.body} />
               )
             )}
-          {/*{isLoading && (*/}
-          {/*  <div className="flex text-center justify-center">*/}
-          {/*    <PuffLoader color="#ffffff" />*/}
-          {/*  </div>*/}
-          {/*)}*/}
+          {isLoading && (
+            <div className="flex text-center justify-center">
+              <PuffLoader color="#ffffff" />
+            </div>
+          )}
           <div ref={messagesEndRef} /> {/* Invisible element at the end of messages */}
         </div>
         <div className="flex items-start space-x-4 w-full">
