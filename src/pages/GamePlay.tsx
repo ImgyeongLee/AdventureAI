@@ -29,6 +29,8 @@ export const GamePlay = () => {
   const createMessage = useAction(api.action.sentMessage);
   const messagesEndRef = useRef(null); // Reference to the end of the messages
 
+  const gameImage = useQuery(api.https.getImageURL, { gameId: Number(gameId) }) || image;
+
   const handleSendMessage = (e: Event) => {
     e.preventDefault();
     if (!newMessage.trim()) return; // Ignore empty messages
@@ -49,7 +51,7 @@ export const GamePlay = () => {
     <div className="bg-custom-gradient container flex min-w-full min-h-full">
       <div className="flex-1 flex flex-col justify-between p-[50px]">
         <div className="generated-image flex-[3] overflow-hidden rounded-lg border-0">
-          <img src={image} alt="image" className="w-full h-full object-contain" />
+          <img src={gameImage} alt="image" className="w-full h-full object-contain" />
         </div>
         <div className="prompt w-full h-[200px] mt-4 bg-black text-white border-0 rounded-[10px] flex items-center justify-center">
           <p className="max-w-[80%]">{text}</p>
