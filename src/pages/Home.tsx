@@ -28,7 +28,11 @@ const Home = () => {
         <button
           onClick={handleClick}
           className="mt-[200px] w-full min-w-[100px] py-4 px-5 bg-hackathon-pink hover:bg-hackathon-dark-blue text-white font-bold rounded-lg transform hover:scale-110 transition-transform duration-150 ease-in-out active:button-press">
-          <p className="text-sm sm:text-lg md:text-xl">Get Started</p>
+          <motion.p
+              className="text-sm sm:text-lg md:text-xl"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+          >Get Started</motion.p>
         </button>
       );
     } else {
