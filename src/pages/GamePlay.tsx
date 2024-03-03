@@ -1,10 +1,11 @@
 import image from '../assets/placeholder-image.png';
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAction, useMutation, useQuery } from 'convex/react';
+import { useAction, useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { useAuth } from '@clerk/clerk-react';
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
+import { PuffLoader } from 'react-spinners';
 
 const PlayerMessage = ({ player, message }) => (
   <div className="flex flex-col items-start justify-start mb-7">
@@ -27,6 +28,7 @@ export const GamePlay = () => {
   const [newMessage, setNewMessage] = useState('');
   const messages = useQuery(api.message.getMessages, { gameId: Number(gameId) });
   const createMessage = useAction(api.action.sentMessage);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const messagesEndRef = useRef(null); // Reference to the end of the messages
 
   const gameImage = useQuery(api.https.getImageURL, { gameId: Number(gameId) }) || image;
@@ -42,6 +44,11 @@ export const GamePlay = () => {
   };
 
   useEffect(() => {
+    if (!messages) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
@@ -58,13 +65,19 @@ export const GamePlay = () => {
         </div>
       </div>
       <div className="chatbox p-[50px] bg-hackathon-chatbox-background flex flex-col flex-1 text-white max-h-[100vh]">
-        <div className="scrollbar-style overflow-auto flex-grow">
-          {messages?.map((msg, index) =>
-            msg.sender === user.userId ? (
-              <YourMessage key={index} message={msg.body} />
-            ) : (
-              <PlayerMessage key={index} player={msg.sender} message={msg.body} />
-            )
+        <div className="messages overflow-auto flex-grow">
+          {!isLoading &&
+            messages?.map((msg, index) =>
+              msg.sender === user.userId ? (
+                <YourMessage key={index} message={msg.body} />
+              ) : (
+                <PlayerMessage key={index} player={msg.sender} message={msg.body} />
+              )
+            )}
+          {isLoading && (
+            <div className="flex text-center justify-center">
+              <PuffLoader color="#ffffff" />
+            </div>
           )}
           <div ref={messagesEndRef} /> {/* Invisible element at the end of messages */}
         </div>
@@ -81,8 +94,7 @@ export const GamePlay = () => {
               type="submit"
               className="bg-hackathon-dark-blue-500 hover:bg-hackathon-gradient text-white font-bold py-2 px-4 rounded-md"
               whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
+              whileTap={{ scale: 0.95 }}>
               Send
             </motion.button>
           </form>
