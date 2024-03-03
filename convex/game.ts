@@ -140,7 +140,7 @@ export const createGame = action({
             string currentDescription (this should be describe the situation wonderfully)
             string settingDescription (this should be a short phrase), 
             string monsterDescription (this should be a short phrase), 
-            integer monsterHealthPoints, 
+            integer monsterHealthPoints, (this should be at least 200)
             integer monsterAttackPoints, 
             string monsterSkillDescription (this should be a short phrase), 
             integer monsterSkillAttackPoints, 

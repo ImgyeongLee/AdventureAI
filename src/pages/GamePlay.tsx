@@ -246,7 +246,11 @@ export const GamePlay = () => {
         </div>
         <div className="prompt w-full h-[200px] mt-4 bg-black text-white border-0 rounded-[10px] flex items-center justify-center">
           {gameInfo && gameInfo.status != 'prompt' && <p className="max-w-[80%]">{gameInfo.currentDescription}</p>}
-          {(!gameInfo || gameInfo.status == 'prompt') && <p className="max-w-[80%]">Loading...</p>}
+          {(!gameInfo || gameInfo.status == 'prompt') && (
+            <div className="flex text-center justify-center">
+              <PuffLoader color="#ffffff" />
+            </div>
+          )}
         </div>
       </div>
       <div className="chatbox p-[50px] bg-hackathon-chatbox-background flex flex-col flex-1 text-white max-h-[100vh]">
